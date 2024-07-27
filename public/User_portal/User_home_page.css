@@ -1,0 +1,384 @@
+@import url('https://fonts.googleapis.com/css2?family=Red+Hat+Text:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poetsen+One&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Zen+Tokyo+Zoo&display=swap');
+
+*{
+    margin: 0%;
+    padding: 0%;
+}
+ marquee{
+    font-family: "Poppins", sans-serif;
+    font-weight: 100;
+    font-style: normal;
+font-weight: bold;
+font-size: xx-large;
+  
+}
+
+body{
+    /* background-color: rgb(255, 255, 255); */
+    /* background-image: url(../Login_Register_Images/bg_image.png); */
+    /* background-size: cover; */
+    font-family: 'Red Hat Text', sans-serif;
+    background-color: #F0EBE3;
+    overflow-x:hidden ;
+}
+
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: #102C57;
+    color: rgb(255, 255, 255);
+    height: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    z-index: 1000;
+    transition: transform 0.3s ease-in-out;
+    /* border-radius: 15px; */
+    border: 2px solid rgb(113, 112, 111) ;
+}
+
+.navbar-brand {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+.navbar-nav {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 20px;
+}
+.navbar-nav li a {
+    color: rgb(255, 255, 255);
+    font-family: 'rajdhani';
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    font-size: 20px;
+}
+.navbar-nav li a:hover {
+    background-color: #c3f2e3;
+    color: black;
+}
+
+
+
+.slider {
+    width: 100vw;
+    height: 570px;
+    position: absolute;
+    top: 100px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+
+}
+
+.slide {
+    width: 1300px;
+    height: 570px;
+    display: none;
+    border-radius:30px;
+    /* box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px; */
+    width: 100vw;
+
+}
+
+.slide img {
+    width: 1300px;
+    height: 570px;
+    border-radius:30px;
+    width: 100%;
+    /* box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px; */
+}
+
+
+
+
+
+@keyframes slide {
+    0%   { opacity: 0 ; transform: translateX(-400px)}
+    80%  {opacity:  1 ;transform: scale(1.1)}
+    100% { opacity:  1 ; transform: translateX(0px)}
+}
+/* .active{
+    animation: slide 1s linear;
+} */
+
+
+
+
+
+.slide-content {
+    position: absolute;
+    top: 50%; /* Adjust as needed */
+    left: 50%; /* Adjust as needed */
+    transform: translate(-50%, -50%);
+    text-align: center; /* Center align the content */
+    color: rgb(255, 255, 255);
+     /* Text color */
+    z-index: 1;
+    text-shadow: 1px 1px 2px rgb(236, 236, 236), 0 0 1em rgb(85, 85, 90), 0 0 0.2em rgb(172, 172, 173); /* Ensure content is above the image */
+}
+
+
+#image-div {
+    /* background-image: url("../User_home_page_images/before_after_3.jpg"); */
+    height: 480px; /* Fixed height */
+    width: 100vw; /* Full width of the viewport */
+    position: absolute;
+    top: 700px;
+ 
+}
+
+video {
+    width: 100%; 
+    height: 90%; 
+    object-fit: cover; 
+    margin: 0;
+    padding: 60px;
+    border: 0;
+    outline: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+    filter: brightness(80%); /* Adjust the brightness percentage as needed */
+}
+
+#department {
+    display: flex;
+    flex-wrap: wrap; /* Allow cards to wrap to the next row */
+    justify-content: center; /* Center align the cards */
+    align-items: flex-start;
+    /* margin-top: 20px; */
+    position: absolute;
+    top: 1400px; 
+    width: 110%;
+    /* height:180vh; */
+background-color: #b9b9b9;
+    /* padding: 120px; */
+    /* box-sizing: border-box;  */
+}
+.department_head{
+    text-align: center;
+      position: relative; 
+      top: 1300px; 
+      color: rgb(68, 188, 249);
+         font-size: 50px;
+ box-shadow: 1px solid black;
+        /* margin-left: 12em; */
+}
+.card {
+    position: relative; 
+    width: 400px;
+    height: 480px;
+    /* border: 1px solid #ccc;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); */
+    margin-right: 50px; 
+
+    /* margin-bottom: 50px;  */
+    overflow: hidden; 
+    border-radius: 30px;
+    /* background-color: transparent; */
+}
+
+.card img {
+    
+
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 30px;
+}
+
+/* .card-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8); 
+    color: #fff;
+    padding: 20px;
+    opacity: 0; 
+    transition: opacity 0.3s ease-in-out; 
+} */
+
+/* .card:hover .card-content {
+    opacity: 1; 
+} */
+
+/* 
+.card {
+    width: 400px;
+    height: 480px;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    margin-right: 10px; 
+    margin-bottom: 20px; /* Add margin at the bottom of each card */
+/* 
+
+.card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+} */
+
+
+.footer{
+    background:#40889e;
+    padding:30px 0px;
+    font-family: 'Play', sans-serif;
+    text-align:center;
+    font-size: 25px;
+    height: 100px;
+    position: absolute;
+    width: 100%;
+    top: 2450px;
+    /* border: 2px solid rgb(113, 112, 111) ; */
+    /* border-radius: 15px; */
+}
+    
+    .footer .row{
+    width:100%;
+    padding:0.6% 0%;
+    color:rgb(0, 0, 0);
+    font-size:0.8em;
+    }
+    
+    .footer .row a{
+    text-decoration:none;
+    color:rgb(0, 0, 0);
+    transition:0.5s;
+    }
+    
+    .footer .row a:hover{
+    color:#ffffff;
+    }
+    
+    
+    .footer .row ul li{
+    display:inline-block;
+    margin-right:30px;
+    }
+   
+
+
+    .modal {
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: transparent;
+        justify-content: center;
+        align-items: center;
+        filter: blur(0px);
+        /* -webkit-filter: blur(8px); */
+        
+    }
+
+    .modal-content {
+        background-color: #8cc3f0;
+        padding: 20px;
+        border-radius: 20px;
+        height: 600px;
+        width: 500px;
+        z-index: 99999999 !important;
+        position: absolute;
+        top: 90px;
+       
+    }
+
+    /* Close button style */
+    .close-btn {
+        cursor: pointer;
+        position: relative;
+        left: 160px;
+        top: -10px;
+        font-size: 28px;
+        color: #333;
+        color: rgb(255, 0, 0);
+    }
+
+
+
+
+    .menu-options {
+        display: none;
+        list-style-type: none;
+    
+        margin-top: 3px;
+        position: absolute;
+        top:50px;
+        left: 1000px;
+        width: 480px;
+     
+        /* border: 2px solid black;  */
+    }
+    
+    .menu-options li {
+        /* padding: 10px; */
+        cursor: pointer;
+        background-color: #f1f1f1;
+        width: 500px;
+        height: 100px;
+        margin-right: 50px;
+    }
+    
+    .menu-options li:hover {
+        background-color: #ddd;
+    }
+
+    #menu-div{
+        height: 430px;
+        background-color: #163d78;
+        
+
+    }
+
+
+
+
+    
+
+
+    /* slider */
+    
+    .pointer-container {
+        position: absolute;
+       top: 85%;
+        left: 49%;
+        transform: translateX(-50%);
+        display: flex;
+        justify-content: center;
+        z-index: 90;
+    }
+    
+    
+    .pointer {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: #ccc;
+        margin: 0 5px;
+        cursor: pointer;
+        z-index: 90;
+    }
+    
+    .pointer.active {
+        background-color: #333;
+    }
+    
+
+    

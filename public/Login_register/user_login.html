@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>User Login</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="user_login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div class="background">
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+    <form  action="/Login" method="post">
+        <h3>User Login</h3>
+
+        <label for="eamil">Email<span style="color: rgb(255, 0, 0);"> *</span></label>
+        <input type="email" name="email" placeholder="Email" id="username" style="color: rgb(0, 0, 0);" required>
+
+        <label for="password">Password<span style="color: rgb(255, 0, 0);"> *</span></label>
+        <input type="password"  name="password" placeholder="Password" id="password" style="color: rgb(0, 0, 0);" required>
+
+        <label style="color:rgb(0, 0, 0);">Enter Captcha :  <i class="fa-solid fa-arrows-rotate" onclick="cap()"></i></label>
+        <div class="form-row" style="display: flex; justify-content: space-between;">
+          <div class="form-group col-md-6">
+            <input type="text" class="form-control" name= "captcha" readonly id="capt" style="height: 40px; width: 100px; text-align: center; color: rgb(0, 0, 0);">
+          </div>
+          <div class="form-group col-md-6">
+            <input type="text" class="form-control" name="captchaInput" id="textinput" style="height: 40px; width: 200px; color: rgb(0, 0, 0);" required>
+          </div>
+        </div>
+
+        <button type="submit">Log In</button>
+
+        <a href="user_register.html"><span> Want a new account?</span></a>
+    </form>
+     
+    <script type="text/javascript">
+        var preCaptcha="Ajg%12";
+          function cap(){
+            var alpha = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V'
+                         ,'W','X','Y','Z','1','2','3','4','5','6','7','8','9','0','a','b','c','d','e','f','g','h','i',
+                         'j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z', '!','@','#','$','%','^','&','*','+'];
+                         var a = alpha[Math.floor(Math.random()*71)];
+                         var b = alpha[Math.floor(Math.random()*71)];
+                         var c = alpha[Math.floor(Math.random()*71)];
+                         var d = alpha[Math.floor(Math.random()*71)];
+                         var e = alpha[Math.floor(Math.random()*71)];
+                         var f = alpha[Math.floor(Math.random()*71)];
+        
+                         var final = a+b+c+d+e+f;
+                         document.getElementById("capt").value=final;
+                       }
+  
+  
+  
+            // function validcap(){
+            //             var stg1 = document.getElementById('capt').value;
+            //             var stg2 = document.getElementById('textinput').value;
+            //             var postStr="";
+  
+            //             if(stg1==stg2){
+            //               alert("Login Successful");
+            //               return true;
+            //             }
+            //             else{
+            //               if(stg2==""){
+            //                 return false;
+            //               }
+            //               else{
+            //                 alert("Please enter a valid captcha!!");
+            //                 // stg2="";
+            //                 return false;
+            //               }
+                         
+            //             }
+            //            }
+  
+                       setTimeout(cap,100);
+  
+  
+        </script>
+  
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <title>User Registration</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="user_register.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+        
+
+</head>
+
+<body>
+    <form action="/UserLogin" method="post">
+        <h3>User Registration</h3>
+     
+        <div style="display: flex; justify-content: space-evenly;">
+            <div>
+                <label for="firstName">First Name<span style="color: rgb(255, 0, 0);"> *</span></label>
+                <input type="text" name="firstName" placeholder="First Name" id="Fname"
+                    style="color: rgb(0, 0, 0); width: 350px;" required>
+
+            </div>
+
+            <div>
+                <label for="lastName">Last Name</label>
+                <input type="text" name="lastName" placeholder="Last Name" id="Lname"
+                    style="color: rgb(0, 0, 0); width: 350px;">
+            </div>
+        </div>
+
+
+        <div style="display: flex; justify-content: space-evenly;">
+            <div>
+                <label for="email">Email<span style="color: rgb(255, 0, 0);"> *</span></label>
+                <input type="email" name="email" placeholder="Email" id="Email"
+                    style="color: rgb(0, 0, 0); width: 350px;" required>
+            </div>
+            <div>
+                <label for="PhoneNumber">Phone<span style="color: rgb(255, 0, 0);"> *</span></label>
+                <input type="text" name="PhoneNumber" placeholder="Phone" id="Phone"
+                    style="color: rgb(0, 0, 0); width: 350px;" required>
+            </div>
+        </div>
+
+        <div style="display: flex; margin-left: 20px;">
+            <div>
+                <label for="dob">Date of Birth<span style="color: rgb(255, 0, 0);"> *</span></label>
+                <input type="date" id="dob" name="dob" style="width: 350px;" required>
+            </div>
+
+            <label for="gender" style="margin-left: 20px;">Gender</label>
+            <div id="gender" style="position: relative; left: -160px; top: 10px;">
+                <div>
+                    <label for="Male" style="margin-right: 20px;">Male</label>
+                    <input type="radio" id="Male" name="gender" value="Male"
+                        style="margin-right: 20px; margin-left: 10px;">
+                </div>
+                <div>
+                    <label for="Female" style="margin-right: 20px;">Female</label>
+                    <input type="radio" id="Female" name="gender" value="Female"
+                        style="margin-right: 20px; margin-left: 20px;">
+                </div>
+
+                <div>
+                    <label for="Others" style="margin-right: 20px;">Others</label>
+                    <input type="radio" id="Others" name="gender" value="Others"
+                        style="margin-right: 20px; margin-left: 18px;" re>
+                </div>
+
+            </div>
+        </div>
+
+
+
+
+        <label for="address" style="margin-left: 20px;">Address<span style="color: rgb(255, 0, 0);"> *</span></label>
+        <input type="text" name="address" placeholder="Address" id="Address"
+            style="color: rgb(0, 0, 0); width: 92%; margin-left: 20px;" required>
+
+        <div style="display: flex; justify-content: space-evenly;">
+            <div>
+                <label for="district">District<span style="color: rgb(255, 0, 0);"> *</span></label>
+                <input type="text" name="district" placeholder="District" id="District"
+                    style="color: rgb(0, 0, 0); width: 350px;" required>
+            </div>
+            <div>
+                <label for="state">State<span style="color: rgb(255, 0, 0);"> *</span></label>
+                <input type="text" name="state" placeholder="State" id="State"
+                    style="color: rgb(0, 0, 0); width: 350px;" required>
+            </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-evenly;">
+            <div>
+                <label for="country">Country<span style="color: rgb(255, 0, 0);"> *</span></label>
+                <input type="text" name="country" placeholder="Country" id="country"
+                    style="color: rgb(0, 0, 0); width: 350px; " required>
+            </div>
+            <div>
+                <label for="pinCode">Pin Code<span style="color: rgb(255, 0, 0);"> *</span></label>
+                <input type="text" name="pinCode" placeholder="Pin Code" id="PinCode"
+                    style="color: rgb(0, 0, 0); width: 350px; " required>
+            </div>
+
+        </div>
+
+        <div style="display: flex; justify-content: space-evenly;">
+            <div>
+                <label for="password">Enter Password<span style="color: rgb(255, 0, 0);"> *</span></label>
+                <input type="password" name="password" placeholder="Enter Password" id="password"
+                    style="color: rgb(0, 0, 0); width: 350px; " required>
+            </div>
+            <div>
+                <label for="C_password">Confirm Password<span style="color: rgb(255, 0, 0);"> *</span></label>
+                <input type="password" placeholder="Confirm Password" id="C_password"
+                    style="color: rgb(0, 0, 0); width: 350px; " required>
+            </div>
+
+        </div>
+        <input type="hidden" name="uniqueId" id="uniqueId">
+        <button type="submit">Register</button>
+
+        <a href="user_login.html"><span> Already have an account?</span></a>
+    </form>
+    <script>
+        function generateUniqueId() {
+            const randomNumber = Math.random().toString(36).substr(2, 9);
+            const timestamp = Date.now().toString(36);
+            return timestamp + randomNumber;
+        }
+        document.getElementById('uniqueId').value = generateUniqueId();
+    </script>
+</body>
+
+</html>

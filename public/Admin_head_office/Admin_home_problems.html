@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Issues</title>
+    <!-- <link rel="stylesheet" href="styles.css"> -->
+    <link rel="stylesheet" href="../Admin_department_office/Admin_home_problems.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body>
+
+    <nav class="navbar hidden-text" id="animated-text">
+        <div class="navbar-brand" style="font-size: 42px; color :rgb(0, 0, 0);">Nagar Sarthi</div>
+        <ul class="navbar-nav">
+            <!-- <li><a href="AdminHome.html">Home</a></li> -->
+            <li><a href="../Admin_department_office/Admin_home_problems.html">Home</a></li>
+            <li><a href="../Admin_department_office/Admin_location.html">Locations</a></li>
+            <li><a href="../Admin_department_office/Admin_completed_problems.html">Completed</a></li>
+            <li><a href="../Admin_department_office/Admin_accepted_problems.html">Accepted</a></li>
+            <li><a href="../Admin_department_office/Admin_rejected_problems.html">Rejected </a></li>
+            <li style="font-size: 25px;"><i class="fas fa-bars" id="menu-icon"></i></li>
+            <ul class="menu-options" id="menu-options">
+                <div style="border: 2px solid black; " id="menu-div">
+                    <div>
+                        <div
+                            style="background-image: url(../HOME_PAGE_IMAGES/sahilverma.jpg); background-size: cover; height: 90px; width: 90px; border-radius: 50%; margin: auto; margin-top: 20px; border: 1px solid black;">
+                        </div>
+                        <div>
+                            <h3 style="margin: auto;"> </h3>
+                        </div>
+                    </div>
+                </div>
+            </ul>
+        </ul>
+    </nav>
+
+
+    <!-- ../Admin_department_office/Admin_problem_details.html -->
+
+    <br><br><br><br>
+
+
+    <main class="content">
+        <div id="data-container">
+            <!-- Data will be dynamically inserted here -->
+        </div>
+    </main>
+
+
+    <footer>
+        <div class="footer">
+            <div class="row">
+                <ul>
+                    <li><a href="#">sahilverma1512@gmail.com</a></li>
+                    <li><a href="#">yadavsatyamsingh@gmail.com</a></li>
+                    <li><a href="#">Satender Kaushik</a></li>
+                    <li><a href="#">Rohit Kumar Singh</a></li>
+
+                </ul>
+            </div>
+            <hr style="margin-top: 10px; border: 1px dashed rgb(66, 61, 61);">
+            <div class="row" style="margin-top: 10px;">
+                Nagar Sarthi Copyright © 2024 - All rights reserved || Designed By: Team Byte Scholars
+            </div>
+        </div>
+    </footer>
+
+
+    <script>
+        // Function to fetch data from the backend and display it in the main container
+        // Function to fetch data from the backend and display it in the main container
+        function fetchDataAndDisplay() {
+            fetch('/getAdminData')
+                .then(response => response.json())
+                .then(data => {
+                    const dataContainer = document.getElementById('data-container');
+
+                    // Clear previous content
+                    dataContainer.innerHTML = '';
+
+                    // Filter data to exclude entries that are accepted, rejected, or on hold
+                    const filteredData = data.filter(entry => !entry.accept && !entry.reject && !entry.hold);
+
+                    // Loop through the filtered data array and create a card for each entry
+                    filteredData.forEach(entry => {
+                        const card = document.createElement('div');
+                        card.classList.add('card');
+
+                        // Wrap card with anchor tag
+                        const cardLink = document.createElement('a');
+                        cardLink.classList.add('card-link'); // Add class for styling
+                        cardLink.href = ` ../Admin_department_office/Admin_problem_details.html?id=${entry._id}`; // Pass ID in URL
+                        cardLink.appendChild(card);
+
+                        const descriptionLabel = document.createElement('span');
+                        descriptionLabel.classList.add('label');
+                        descriptionLabel.textContent = "Description:";
+
+                        const description = document.createElement('span');
+                        description.textContent = entry.description;
+
+                        const image = document.createElement('img');
+                        image.src = entry.imagePath;
+                        image.alt = 'Fetched Image';
+
+                        const addressLabel = document.createElement('span');
+                        addressLabel.classList.add('label');
+                        addressLabel.textContent = "Address:";
+
+                        const address = document.createElement('span');
+                        address.textContent = entry.address;
+
+                        const dateLabel = document.createElement('span'); // Create span for date
+                        dateLabel.classList.add('label');
+                        dateLabel.textContent = "Date:";
+
+                        const date = document.createElement('span'); // Create span for date value
+                        date.textContent = new Date(entry.date).toLocaleDateString(); // Convert date to local string format
+
+                        // Append elements to the card
+                        card.appendChild(image);
+                        card.appendChild(descriptionLabel);
+                        card.appendChild(description);
+                        card.appendChild(document.createElement('br')); // Add line break
+                        card.appendChild(addressLabel);
+                        card.appendChild(address);
+                        card.appendChild(document.createElement('br')); // Add line break
+                        card.appendChild(dateLabel); // Append date label
+                        card.appendChild(date); // Append date value
+
+                        // Append card to the data container
+                        dataContainer.appendChild(cardLink); // Append cardLink instead of card
+                    });
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        }
+
+        // Call the fetchDataAndDisplay function when the page loads
+        window.onload = fetchDataAndDisplay;
+
+
+        document.getElementById('menu-icon').addEventListener('click', function () {
+            const menuOptions = document.getElementById('menu-options');
+
+            if (menuOptions.style.display === 'none' || menuOptions.style.display === '') {
+                menuOptions.style.display = 'block';
+            } else {
+                menuOptions.style.display = 'none';
+            }
+        });
+
+        document.addEventListener('click', function (event) {
+            const menuOptions = document.getElementById('menu-options');
+            const menuIcon = document.getElementById('menu-icon');
+
+            if (!menuOptions.contains(event.target) && event.target !== menuIcon) {
+                menuOptions.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

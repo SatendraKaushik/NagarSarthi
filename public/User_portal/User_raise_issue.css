@@ -1,0 +1,347 @@
+@import url('https://fonts.googleapis.com/css2?family=Red+Hat+Text:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+*{
+    margin: 0%;
+    padding: 0%;
+}
+
+body{
+    /* background-color: rgb(255, 255, 255); */
+    /* background-image: url(../Login_Register_Images/bg_image.png); */
+    background-color: #F0EBE3;
+
+    font-family: 'Red Hat Text', sans-serif;
+}
+
+
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: #102C57;
+    color: rgb(255, 255, 255);
+    height: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    z-index: 1000;
+    transition: transform 0.3s ease-in-out;
+    /* border-radius: 15px; */
+    border: 2px solid rgb(113, 112, 111) ;
+}
+
+.navbar-brand {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+.navbar-nav {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 20px;
+}
+.navbar-nav li a {
+    color: rgb(255, 255, 255);
+    font-family: 'rajdhani';
+    font-weight: 100;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    font-size: 20px;
+}
+.navbar-nav li a:hover {
+    background-color: #c3f2e3;
+    color: black;
+}
+
+
+.footer{
+    background:#367588;
+    padding:30px 0px;
+    font-family: 'Play', sans-serif;
+    text-align:center;
+    font-size: 25px;
+    height: 100px;
+    position: absolute;
+    width: 100%;
+    top: 2700px;
+    /* border: 2px solid rgb(113, 112, 111) ; */
+    border-radius: 15px;
+}
+    
+    .footer .row{
+    width:100%;
+    padding:0.6% 0%;
+    color:rgb(0, 0, 0);
+    font-size:0.8em;
+    }
+    
+    .footer .row a{
+    text-decoration:none;
+    color:rgb(0, 0, 0);
+    transition:0.5s;
+    }
+    
+    .footer .row a:hover{
+    color:#fff;
+    }
+    
+    
+    .footer .row ul li{
+    display:inline-block;
+    margin-right:30px;
+    }
+   
+    .menu-options {
+        display: none;
+        list-style-type: none;
+        padding-left: 0;
+        margin-top: 5px;
+        position: absolute;
+        top: 70px;
+        left: 960px;
+        width: 500px;
+        height: 480px;
+        /* border: 2px solid black;  */
+    }
+    
+    .menu-options li {
+        padding: 10px;
+        cursor: pointer;
+        background-color: #f1f1f1;
+        width: 500px;
+        height: 100px;
+    }
+    
+    .menu-options li:hover {
+        background-color: #ddd;
+    }
+
+    #menu-div{
+        height: 500px;
+        background-color: grey;
+        
+
+    }
+
+
+
+
+    /* body {
+        overflow: hidden;
+    } */
+
+    .card {
+        /* Adjust width to fit two cards in a row */
+        width: calc(50% - 20px);
+        /* Adjust based on your preference */
+        /* Add space around each card */
+        border: 1px solid #ccc;
+
+        border-radius: 5px;
+        padding: 10px;
+        align-items: center;
+        /* Limit height to allow vertical scrolling */
+        height: auto; /* Adjust height automatically based on content */
+        /* Adjust based on your preference */
+        /* Add margin between cards */
+        margin-bottom: 20px;
+        /* Display cards in a grid layout */
+        float: left;
+        box-sizing: border-box;
+        margin-left: 12px;
+    }
+
+    /* Style for the image */
+    .card img {
+        width: 180px;
+        /* Set image width */
+        height: 180px;
+        /* Set image height */
+        margin-bottom: 10px;
+        /* Adjust based on your preference */
+      
+    }
+
+    .content {
+        overflow-y: auto;
+        width: 100%;
+        overflow-x: hidden;
+        
+    }
+
+    /* Additional styling for labels */
+    .label {
+        font-weight: bold;
+        margin-bottom: 5px;
+        margin-right: 5px;
+        /* Add some spacing between label and content */
+    }
+
+    /* Styling for status range */
+    .status-range {
+        width: 80%;
+        height: 10px;
+        background-color: #f0f0f0;
+        border-radius: 5px;
+        margin-top: 10px;
+    }
+
+    .status-bar {
+        height: 100%;
+        border-radius: 5px;
+        
+    }
+
+    .accept {
+        background-color: green;
+    }
+
+    .reject {
+        background-color: red;
+    }
+
+    .complete {
+        background-color: blue;
+    }
+
+    /* Clear floats to ensure proper wrapping */
+    .clearfix::after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+    .card-link {
+        text-decoration: none;
+        /* Remove underline */
+        color: inherit !important;
+        /* Inherit text color */
+        cursor: pointer;
+        /* Change cursor to pointer on hover */
+    }
+
+    /* Horizontal layout for info container */
+    .info-container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+    }
+
+    /* Styling for description and other content */
+    .content-container {
+        margin-left: 20px;
+    }
+
+
+    #container {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        margin-left: 12em;
+        height: 550px;
+    }
+
+    #webcam {
+        border-radius: 12px;
+    }
+
+    .input-container {
+        display: flex;
+        flex-direction: column;
+        /* justify-content: space-between; */
+        margin-right: 60px;
+        /* border: 2px solid black; */
+        border-radius:20px ;
+        height: 500px;
+        width: 400px;
+        /* Adjust margin for spacing */
+    }
+
+    .input-container input {
+        margin-bottom: 10px;
+        padding: 5px;
+        height: 30px;
+        width: 350px;
+        border-radius: 10px;
+border: 1px solid black;
+margin-left: 20px;
+background-color: transparent;
+    }
+
+
+    textarea{
+background-color: transparent;
+
+        margin-bottom: 10px;
+        padding: 5px;
+        height: 60px;
+        width: 350px;
+        border-radius: 10px;
+    margin-left: 20px;
+    }
+
+    #departmentInput{
+        background-color: transparent;
+        margin-bottom: 10px;
+        padding: 5px;
+        height: 30px;
+        width: 350px;
+        border-radius: 10px;
+         margin-left: 20px;
+    }
+
+
+
+    .contents {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        /* position: relative; */
+        /* top: -80px;/ */
+        position: fixed;
+    }
+
+    #controls {
+        /* width: 150px; */
+        display: flex;
+        gap: 12px;
+        /* justify-content: space-between; */
+        align-items: center;
+        margin-left: 22em;
+    }
+
+    .op {
+        padding: 10px;
+        /* background-color: orange; */
+        color: white;
+        /* Set text color to white */
+        text-decoration: none;
+        margin-top: 40px;
+        /* Adjust margin for spacing */
+        border-radius: 13px;
+        border: 2px solid rgb(93, 93, 93);
+    background-color: #ff6200df;
+    margin-left: 10px;
+    }
+
+    #snapButton {
+        display: none;
+    }
+/* 
+    form{
+        margin-left: 100px;
+        padding-bottom: 50px;
+        border: 2px solid black;
+        border-radius: 30px;
+    } */
+

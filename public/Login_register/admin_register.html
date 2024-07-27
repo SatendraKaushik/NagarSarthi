@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>Admin Registration</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="admin_register.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <form action="/register" method="POST" onsubmit="convertCityToLowerCase()">
+        <h3>Admin Registration</h3>
+
+        <div style="display: flex; justify-content: space-evenly;">
+            <div>
+                <label for="Email">Email<span style="color: rgb(255, 0, 0);"> *</span></label>
+                <input type="email" name="Email" placeholder="Email" id="Email" style="color: rgb(0, 0, 0); width: 350px;" required>
+            </div>
+            <div>
+                <label for="Phone">Phone<span style="color: rgb(255, 0, 0);"> *</span></label>
+                <input type="text" name="Phone" placeholder="Phone" id="Phone" style="color: rgb(0, 0, 0); width: 350px;" required>
+            </div>
+        </div>
+
+        <label for="Address" style="margin-left: 20px;">Address<span style="color: rgb(255, 0, 0);"> *</span></label>
+        <input type="text" placeholder="Address" id="Address" name="Address" style="color: rgb(0, 0, 0); width: 92%; margin-left: 20px;" required>
+
+        <div style="display: flex; justify-content: space-evenly;">
+            <div>
+                <label for="district">District<span style="color: rgb(255, 0, 0);"> *</span></label>
+                <input type="text" name="district" placeholder="District" id="District" style="color: rgb(0, 0, 0); width: 350px;" required>
+            </div>
+            <div>
+                <label for="State">State<span style="color: rgb(255, 0, 0);"> *</span></label>
+                <input type="text" name="State" placeholder="State" id="State" style="color: rgb(0, 0, 0); width: 350px;" required>
+            </div>
+        </div>
+        
+        <div style="display: flex; justify-content: space-evenly;">
+            <div>
+                <label for="country"  >Country<span style="color: rgb(255, 0, 0);"> *</span></label>
+                <input type="text" name="country" placeholder="Country" id="country" style="color: rgb(0, 0, 0); width: 350px; " required>
+            </div>
+            <div>
+                <label for="PinCode"  >Pin Code<span style="color: rgb(255, 0, 0);"> *</span></label>
+                <input type="text" name="PinCode" placeholder="Pin Code" id="PinCode" style="color: rgb(0, 0, 0); width: 350px; " required>
+            </div>
+        
+        </div>
+        
+
+        <div style="display: flex; justify-content: space-evenly;">
+            <div>
+                <label for="department"  style="margin-left: -50px;">Department<span style="color: rgb(255, 0, 0);"> *</span></label>
+                <select name="department" id="departmentInput" style="height: 50px; width: 350px; background-color: transparent; border: 1px solid black; border-radius: 10px; margin-left: -50px ;">
+                    <option value="" selected disabled>Select Department</option>
+                    <option value="head_office">Head Office</option>
+                    <option value="sach_barat">Swachh Bharat</option>
+                    <option value="pwd">PWD</option>
+                    <option value="water_department">Water Department</option>
+                    <option value="street_light">Street Light</option>
+                </select>
+            </div>
+            <div style="display: flex; position: relative; top: 30px;">
+                <label for="admin"  >Head Office<span style="color: rgb(255, 0, 0);">*</span></label>
+                <input type="radio" name="admin" id="admin" style="color: rgb(0, 0, 0);position: relative; top: 10px; margin-right: 30px; " >
+                <label for="employee" >Departmental<span style="color: rgb(255, 0, 0);">*</span></label>
+                <input type="radio" name="admin" id="employee" style="color: rgb(0, 0, 0); position: relative; top: 10px;" >
+            </div>
+        
+        </div>
+            
+        
+
+        <div style="display: flex; justify-content: space-evenly;">
+            <div>
+                <label for="password"  >Enter Password<span style="color: rgb(255, 0, 0);"> *</span></label>
+                <input type="password" name="password" placeholder="Enter Password" id="password" style="color: rgb(0, 0, 0); width: 350px; " required>
+            </div>
+            <div>
+                <label for="C_password"  >Confirm Password<span style="color: rgb(255, 0, 0);"> *</span></label>
+                <input type="password" name="C_password" placeholder="Confirm Password" id="C_password" style="color: rgb(0, 0, 0); width: 350px; " required>
+            </div>
+        
+        </div>
+        <button type="C_password">Register</button>
+        <a href="AdminLogin.html"><span> Already an admin?</span></a>
+    </form>
+  
+</body>
+</html>

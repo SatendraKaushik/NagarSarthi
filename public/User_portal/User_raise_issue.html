@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nagar Sarthi - Raise Issues</title>
+    <script type="text/javascript" src="https://unpkg.com/webcam-easy@1.1.1/dist/webcam-easy.min.js"></script>
+    <link rel="stylesheet" href="../User_portal/User_raise_issue.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+</head>
+
+<body>
+
+    <div class="block">
+        <div class="container">
+            <header class="header">
+                <div class="user-location">
+                    <div id="location-container">
+                        <p id="location-text"></p>
+                    </div>
+                </div>
+
+            </header>
+        </div>
+
+
+
+
+        <nav class="navbar hidden-text" id="animated-text">
+            <div class="navbar-brand"
+                style="font-size: 42px; color :rgb(255, 255, 255); font-family: 'Playfair Display', sans-serif; font-weight: 200;">
+                Nagar Sarthi</div>
+            <ul class="navbar-nav">
+                <li><a href="../User_portal/user_home.html">Home</a></li>
+                <li><a href="../User_portal/User_Issues.html">Issues</a></li>
+                <li><a href="#">Raise Issue</a></li>
+                <li><a href="../User_portal/User_status_tracking.html">Issue Status</a></li>
+                <li style="font-size: 25px;"><i class="fas fa-bars" id="menu-icon"></i></li>
+                <ul class="menu-options" id="menu-options">
+                    <div style="border: 2px solid black; " id="menu-div">
+                        <div>
+                            <div
+                                style="background-image: url(HOME_PAGE_IMAGES/sahilverma.jpg); background-size: cover; height: 90px; width: 90px; border-radius: 50%; margin: auto; margin-top: 20px;">
+                            </div>
+                            <div>
+                                <h3 style="margin: auto;"> </h3>
+                            </div>
+                        </div>
+                    </div>
+                </ul>
+            </ul>
+        </nav>
+
+
+
+        <div
+            style="height: 600px; width: 1200px;  z-index: -100; position: absolute; top: 100px; left: 150px; border-radius: 20px; background-color: rgb(233, 233, 233); box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;">
+
+        </div>
+
+
+        <main class="content">
+            <form id="myForm" action="/submitForm" method="post" style="margin-top: 100px; position: fixed; ">
+                <div id="container">
+                    <div class="input-container"
+                        style="border: 1px solid black; padding-bottom: 20px; position: relative; top: 30px; background-color: #e6e6e6;">
+                        <input type="text" name="name" id="nameInput" placeholder="Name" style="margin-top: 30px;">
+                        <input type="tel" name="PhoneNumber" id="phoneInput" placeholder="Phone Number">
+                        <input type="email" name="email" id="emailInput" placeholder="Email">
+                        <input type="text" name="address" id="addressInput" placeholder="Address">
+                        <input type="text" name="district" id="cityInput" placeholder="City">
+                        <!-- New input for city -->
+                        <textarea name="description" id="descriptionBox" placeholder="Enter Description"></textarea>
+                        <select name="department" id="departmentInput">
+                            <option value="" selected disabled>Select Department</option>
+                            <option value="sach_barat">Sach Barat</option>
+                            <option value="pwd">PWD</option>
+                            <option value="water_department">Water Department</option>
+                            <option value="street_light">Street Light</option>
+                        </select>
+                        <input type="file" accept="image/jpeg, image/png" onchange="handleFile(this)">
+                        <input type="hidden" name="uploadPath" id="uploadPath">
+                        <input type="hidden" name="image" id="imageInput">
+                        <input type="hidden" name="date" id="dateInput">
+                        <input type="hidden" name="time" id="timeInput">
+                        <input type="hidden" name="userid" id="userid">
+                        <input type="hidden" name="latitude" id="latitude">
+                        <input type="hidden" name="longitude" id="longitude">
+                        <input type="submit" value="Submit" onclick="addDateTime()"
+                            style="background-color: rgb(95, 219, 95);z-index: 999;">
+                    </div>
+                    <div>
+                        <video id="webcam" autoplay playsinline width="400" height="400"
+                            style="box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;"></video>
+                        <canvas id="canvas"></canvas>
+                    </div>
+                </div>
+                <div class="contents" style="margin-left: 400px; margin-top: -75px;">
+                    <div id="controls">
+                        <a id="snap" class="op" onclick="takePicture()">Snap</a>
+                        <a class="op" onclick="flipcamera()">Flip Camera</a>
+                    </div>
+                    <a class="op" id="snapButton" onclick="showWebcam()" style="margin-left: 10px;">Take Another
+                        Photo</a>
+                </div>
+            </form>
+        </main>
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+    <script src="../User_portal/location.js"></script>
+    <script type="text/javascript"
+        src="https://www.bing.com/api/maps/mapcontrol?key=ArSGwElpgs65UXUwCnZ4ibhLzkmxuScTxz0rCq_kgJy35pa2tSq229GIMzMPVQ8P&callback=initMap"
+        async defer></script>
+    <script>
+        const video = document.querySelector('#webcam');
+        const canvas = document.querySelector("#canvas");
+        const descriptionInput = document.querySelector("#descriptionBox");
+        const snapButton = document.querySelector("#snapButton");
+
+        const webcam = new Webcam(video, "user", canvas);
+
+
+        async function takePicture() {
+            let picture = webcam.snap();
+            try {
+                // Convert the canvas image to a data URL
+                let dataURL = canvas.toDataURL('image/jpeg');
+
+                // Create an image object
+                let img = new Image();
+                img.src = dataURL;
+
+                // Create a canvas element to draw the image
+                let tempCanvas = document.createElement('canvas');
+                let tempCtx = tempCanvas.getContext('2d');
+                img.onload = function () {
+                    tempCanvas.width = img.width;
+                    tempCanvas.height = img.height;
+                    tempCtx.drawImage(img, 0, 0);
+
+                    // Convert the image to PNG format
+                    let pngDataURL = tempCanvas.toDataURL('image/png');
+
+                    // Set the PNG data URL as the value of the hidden input field
+                    document.getElementById('imageInput').value = pngDataURL;
+
+                    // Proceed with sending the PNG image to the API
+                    sendToAPI(pngDataURL);
+                    console.log("function call");
+                    snapdescription(pngDataURL);
+                };
+            } catch (error) {
+                console.error("Error capturing image:", error);
+            }
+            // Hide webcam and show button to take another photo
+            video.style.display = "none";
+            snapButton.style.display = "block";
+        }
+
+        function sendToAPI(pngDataURL) {
+            // Create a Blob object from the data URL
+            fetch(pngDataURL)
+                .then(res => res.blob())
+                .then(blob => {
+                    // Create a FormData object and append the PNG image file
+                    var formData = new FormData();
+                    formData.append('media', blob);
+                    formData.append('models', 'nudity-2.0,wad,offensive,text-content,face-attributes,gore,genai');
+                    formData.append('api_user', '432766867');
+                    formData.append('api_secret', 'gqDBf6rT8vTx87g3FBqaTp3Dmim3uatc');
+
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('POST', 'https://api.sightengine.com/1.0/check.json', true);
+                    xhr.onload = function () {
+                        if (xhr.status === 200) {
+                            var response = JSON.parse(xhr.responseText);
+                            console.log(response);
+                            displayOutput(response);
+                        } else {
+                            alert('Error occurred while uploading image.');
+                        }
+                    };
+                    xhr.send(formData);
+                })
+                .catch(error => {
+                    console.error("Error converting image:", error);
+                });
+        }
+        function displayOutput(response) {
+            var fieldsToCheck = ['alcohol', 'drugs', 'gore', 'medical_drugs', 'offensive', 'recreational_drugs', 'skull', 'tobacco', 'weapon', 'weapon_firearm', 'weapon_knife'];
+
+            for (var i = 0; i < fieldsToCheck.length; i++) {
+                var fieldName = fieldsToCheck[i];
+
+                if (response.hasOwnProperty(fieldName)) {
+                    var fieldValue = response[fieldName];
+
+                    if (typeof fieldValue === 'number' && fieldValue > 0.5) {
+                        alert("The image you have clicked have NSFW content.");
+                        return;
+                    } else if (typeof fieldValue === 'object' && fieldValue.prob && fieldValue.prob > 0.5) {
+                        alert("The image you have clicked have NSFW content.");
+                        return;
+                    }
+                }
+            }
+
+
+
+            var nudityObj = response.nudity;
+
+            if (nudityObj.none && nudityObj.none > 0.8) {
+                flag = false;
+                return;
+            }
+
+            if (nudityObj) {
+                var nudityContext = nudityObj.context;
+
+                if (nudityContext) {
+                    for (var key in nudityContext) {
+                        if (key !== 'none' && nudityContext.hasOwnProperty(key) && typeof nudityContext[key] === 'number' && nudityContext[key] > 0.5) {
+                            alert("The image you have clicked have NSFW content.");
+                            flag = false;
+                            return;
+                        }
+                    }
+                }
+            }
+            var offensiveObj = response.offensive;
+
+            if (offensiveObj) {
+                for (var key in offensiveObj) {
+                    if (offensiveObj.hasOwnProperty(key) && typeof offensiveObj[key] === 'number' && offensiveObj[key] > 0.5) {
+                        alert("The image you have clicked have NSFW content.");
+                        return;
+                    }
+                }
+            }
+
+            // If none of the conditions match, display success alert
+            alert("The uploaded image passed the check successfully.");
+        }
+
+
+        // assign a uique  ID for each user's session 
+        function generateUniqueId() {
+            // Generate a random number and convert it to base 36
+            const randomNumber = Math.random().toString(36).substr(2, 9);
+
+            // Get the current timestamp
+            const timestamp = Date.now().toString(36);
+
+            // Concatenate the timestamp and random number
+            const uniqueId = timestamp + randomNumber;
+
+            return uniqueId;
+        }
+
+        // Example usage
+
+        function addDateTime() {
+            const uniqueId = generateUniqueId();
+            const cityInput = document.getElementById('cityInput').value.toLowerCase(); // Retrieve city and convert to lowercase
+            document.getElementById('cityInput').value = cityInput; // Set the lowercase city value back to the input
+            document.getElementById('userid').value = uniqueId;
+            const currentDate = new Date();
+            const date = currentDate.toISOString().split('T')[0]; // Get date in YYYY-MM-DD format
+            const time = currentDate.toTimeString().split(' ')[0];
+            getLocation();
+            // Set the date and time values to the hidden input fields
+            document.getElementById('dateInput').value = date;
+            document.getElementById('timeInput').value = time;
+        }
+        function flipcamera() {
+            webcam.flip();
+            webcam.start();
+        }
+
+        function showWebcam() {
+            canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+            video.style.display = "";
+            snapButton.style.display = "none";
+            document.getElementById("descriptionBox").innerHTML = "";
+            webcam.start();
+        }
+
+        webcam.start();
+
+
+        // for Passing the coordinate into backend 
+
+        async function getLocation() {
+            if (navigator.geolocation && !isLocationFetched) {
+                // Set isLocationFetched to true to prevent further calls
+                isLocationFetched = true;
+
+                // Introduce a delay of 1 second (1000 milliseconds)
+                await new Promise(resolve => setTimeout(resolve, 1000));
+
+                navigator.geolocation.getCurrentPosition(
+                    pos => {
+                        console.log("Location fetched successfully:", pos);
+                        const coordinates = [pos.coords.latitude, pos.coords.longitude];
+                        console.log("Coordinates:", coordinates);
+                        fetchLocationDetails(coordinates);
+                    },
+                    error => console.error('Error getting location:', error)
+                );
+            } else {
+                console.error('Geolocation is not supported by this browser or location already fetched.');
+            }
+        }
+
+        async function fetchLocationDetails(coordinates) {
+            // Replace 'YOUR_OPENCAGE_API_KEY' with your actual OpenCage API key
+            const apiKey = 'dbf5cac2f04c479c8c514f6567eedef3';
+            const apiUrl = `https://api.opencagedata.com/geocode/v1/json?q=${coordinates[0]}+${coordinates[1]}&key=${apiKey}`;
+            console.log(`${coordinates[0]},${coordinates[1]}`);
+
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                const city = data.results[0].components.city;
+                const country = data.results[0].components.country;
+                const locationText = document.getElementById('location-text');
+                // locationText.textContent = `Your current location: ${city}, ${country}`;
+                document.getElementById('latitude').value = `${coordinates[0]}`;
+                document.getElementById('longitude').value = `${coordinates[1]}`;
+            } catch (error) {
+                console.error('Error fetching location details:', error);
+            }
+        }
+        function handleFile(input) {
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const uploadDataURL = e.target.result;
+                    document.getElementById('uploadPath').value = uploadDataURL;
+                    console.log(uploadDataURL);
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        window.addEventListener('load', getLocation);
+
+
+
+
+
+        document.getElementById('menu-icon').addEventListener('click', function () {
+            const menuOptions = document.getElementById('menu-options');
+
+            if (menuOptions.style.display === 'none' || menuOptions.style.display === '') {
+                menuOptions.style.display = 'block';
+            } else {
+                menuOptions.style.display = 'none';
+            }
+        });
+
+        document.addEventListener('click', function (event) {
+            const menuOptions = document.getElementById('menu-options');
+            const menuIcon = document.getElementById('menu-icon');
+
+            if (!menuOptions.contains(event.target) && event.target !== menuIcon) {
+                menuOptions.style.display = 'none';
+            }
+        });
+
+        async function snapdescription(imageURL) {
+            console.log("function call");
+            const url = 'https://ai-api-photo-description.p.rapidapi.com/description-from-file';
+
+            // Convert Base64 URL to Blob
+            function base64ToBlob(base64) {
+                const byteString = atob(base64.split(',')[1]);
+                const mimeString = base64.split(',')[0].split(':')[1].split(';')[0];
+                const buffer = new ArrayBuffer(byteString.length);
+                const data = new Uint8Array(buffer);
+                for (let i = 0; i < byteString.length; i++) {
+                    data[i] = byteString.charCodeAt(i);
+                }
+                return new Blob([buffer], { type: mimeString });
+            }
+
+            const imageBlob = base64ToBlob(imageURL);
+            const data = new FormData();
+            data.append('image', imageBlob, 'image.png');
+            const options = {
+                method: 'POST',
+                headers: {
+                    'X-RapidAPI-Key': '08f05536a6msh090dfe1fb045ee3p14aafbjsn0dda1460162c',
+                    'X-RapidAPI-Host': 'ai-api-photo-description.p.rapidapi.com'
+                },
+                body: data
+            };
+
+            try {
+                const response = await fetch(url, options);
+                // const result = await response.text();
+                // const caption = result.caption;
+                const result = await response.json(); // Parse the response as JSON
+                const caption = result.caption;
+                console.log(caption);
+                // Split the caption into an array of words
+                const words = caption.split(/\s+/);
+
+                // Slice the array to get the first 20 words
+                const trimmedWords = words.slice(0, 15);
+
+                // Join these words back into a single string
+                const trimmedCaption = trimmedWords.join(" ");
+
+                console.log(trimmedCaption);
+                document.getElementById("descriptionBox").innerHTML = trimmedCaption;
+            } catch (error) {
+                console.error( "error aa raha hai balak " + error);
+            }
+        }
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,75 @@
+*{
+    margin: 0%;
+    padding: 0%;
+}
+body{
+   
+    background-image: url("../Login_Register_Images/bg_image.png");
+    background-size: cover;
+}
+
+#logo{
+    background-image: url("../HOME_PAGE_IMAGES/Nagar_Sarthi_logo-removebg-preview.png");
+    background-size: cover;
+    width: 200px;
+    height: 200px;
+    margin: auto;
+    margin-top: 0px;
+}
+#main-div{
+    height: 400px;
+    width: 80%;
+    margin: auto;
+    margin-top: 20px;
+    background-image: url("/Login_Register_Images/bg5_image.png");
+    background-size: cover;
+    border-radius: 40px;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+
+}
+
+span{
+  margin-left: 490px;
+  font-size: 40px;
+  margin-top: 10px;
+  font-weight: 100;
+}
+
+#user{
+    background-image: url(/Login_Register_Images/user_group_man-1024.webp);
+    background-size: contain;
+}
+#admin{
+    background-image: url(/Login_Register_Images/admin_image.png);
+    background-size: contain;
+}
+
+#inner-div{
+    display: flex;
+    justify-content: space-evenly;
+    position: relative;
+    top: 50px;
+}
+
+.user-admin{
+    height: 200px;
+    width: 200px;
+    margin-top: 50px;
+    border-radius: 20px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+h3{
+    margin-left: 60px;
+    font-size: 25px;
+    font-weight: 400;
+    position: relative;
+    top: 210px;
+}
+
+a{
+    text-decoration: none;
+    color: inherit;
+    
+}
+

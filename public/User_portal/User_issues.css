@@ -1,0 +1,208 @@
+@import url('https://fonts.googleapis.com/css2?family=Red+Hat+Text:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+* {
+    margin: 0%;
+    padding: 0%;
+}
+
+body {
+    /* background-color: rgb(255, 255, 255); */
+    /* background-image: url(../Login_Register_Images/bg_image.png); */
+    background-color: #F0EBE3;
+    overflow-x: hidden;
+    font-family: 'Red Hat Text', sans-serif;
+}
+
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: #102C57;
+    color: rgb(255, 255, 255);
+    height: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    z-index: 1000;
+    transition: transform 0.3s ease-in-out;
+    /* border-radius: 15px; */
+    border: 2px solid rgb(113, 112, 111) ;
+}
+
+.navbar-brand {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+.navbar-nav {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 20px;
+}
+.navbar-nav li a {
+    color: rgb(255, 255, 255);
+    font-family: 'rajdhani';
+    font-weight: 100;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    font-size: 20px;
+}
+.navbar-nav li a:hover {
+    background-color: #c3f2e3;
+    color: black;
+}
+
+
+.footer {
+    /* margin-top: 50px; */
+    background: #367588;
+    padding: 30px 0px;
+    font-family: 'Play', sans-serif;
+    text-align: center;
+    font-size: 25px;
+    height: 100px;
+    position: absolute;
+    width: 100%;
+    /* top: 2000px; */
+    /* border: 2px solid rgb(113, 112, 111); */
+    border-radius: 15px;
+}
+
+.footer .row {
+    width: 100%;
+    padding: 0.6% 0%;
+    color: rgb(52, 52, 52);
+    font-size: 0.8em;
+}
+
+.footer .row a {
+    text-decoration: none;
+    color: rgb(0, 0, 0);
+    transition: 0.5s;
+}
+
+.footer .row a:hover {
+    color: #fff;
+}
+
+
+.footer .row ul li {
+    display: inline-block;
+    margin-right: 30px;
+}
+
+.menu-options {
+    display: none;
+    list-style-type: none;
+    padding-left: 0;
+    margin-top: 5px;
+    position: absolute;
+    top: 70px;
+    left: 960px;
+    width: 500px;
+    height: 480px;
+    /* border: 2px solid black;  */
+}
+
+.menu-options li {
+    padding: 10px;
+    cursor: pointer;
+    background-color: #f1f1f1;
+    width: 500px;
+    height: 100px;
+}
+
+.menu-options li:hover {
+    background-color: #ddd;
+}
+
+#menu-div {
+    height: 500px;
+    background-color: grey;
+
+
+}
+
+.data-container {
+    display: flex;
+    justify-content: space-evenly;
+    /* height: auto; */
+    width: 100%;
+}
+
+.card {
+    display: inline-block;
+    /* Display cards inline */
+    width: 400px;
+    /* Set a fixed width for each card */
+    /* background-color: rgb(194, 242, 249); */
+    background-color: #EADBC8;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    /* box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset; */
+    /* box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset; */
+    /* border: 1px solid grey; */
+
+
+    height: 500px;
+    /* Set a fixed height for each card */
+    vertical-align: top;
+    /* Align cards to the top of the line */
+    transition: transform 0.3s ease;
+    /* Add transition effect */
+    margin-left: 50px;
+    margin-top: 50px;
+    margin-right: 30px;
+    margin-bottom: 20px;
+}
+
+.card:hover {
+    transform: scale(1.03);
+    transition: transform 300ms ease;
+}
+
+/* Style for the image */
+.card img {
+    /* max-width: 100%; */
+    width: 100%;
+    height: 330px;
+    /* margin-top: 20px; */
+    margin-bottom: 5px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+
+    /* margin-left: 25px; */
+}
+
+.content {
+    margin-top: 80px;
+    overflow-y: auto;
+    display: flex;
+    justify-content: space-evenly;
+    overflow-y: hidden;
+    height: auto;
+
+}
+
+/* Additional styling for labels */
+.label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    margin-left: 20px;
+    text-align: center;
+    display: inline-block;
+    /* Display labels inline */
+    margin-right: 5px;
+    /* Add some spacing between label and content */
+}
+
+.loader {
+    display: none;
+}

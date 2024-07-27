@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../Admin_department_office/Admin_location.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Locations</title>
+    <style>
+       
+    </style>
+</head>
+
+<body>
+
+     <nav class="navbar hidden-text" id="animated-text">
+        <div class="navbar-brand" style="font-size: 42px; color :rgb(0, 0, 0);">Nagar Sarthi</div>
+        <ul class="navbar-nav">
+            <li><a href="Admin_home_problems.html">Home</a></li>
+            <li><a href="Admin_location.html">Locations</a></li>
+            <li><a href="Admin_completed_problems.html">Completed</a></li>
+            <li><a href="Admin_accepted_problems.html">Accepted</a></li>
+            <li><a href="Admin_rejected_problems.html">Rejected </a></li>
+            <li style="font-size: 25px;"><i class="fas fa-bars" id="menu-icon"></i></li>
+                <ul class="menu-options" id="menu-options">
+                    <div style="border: 2px solid black; " id="menu-div">
+                        <div>
+                            <div style="background-image: url(../HOME_PAGE_IMAGES/sahilverma.jpg); background-size: cover; height: 90px; width: 90px; border-radius: 50%; margin: auto; margin-top: 20px; border: 1px solid black;"></div>
+                            <div><h3 style="margin: auto;"> </h3></div>
+                        </div>
+                    </div>
+                </ul>
+        </ul>
+    </nav>
+
+
+    <!-- Map container -->
+    <div id="map-container"></div>
+
+    <script>
+        let map;
+
+        function initMap() {
+            // Use geolocation to get the current position
+            navigator.geolocation.getCurrentPosition(function (position) {
+                const currentLocation = new Microsoft.Maps.Location(position.coords.latitude, position.coords.longitude);
+
+                map = new Microsoft.Maps.Map(document.getElementById('map-container'), {
+                    credentials: 'ArSGwElpgs65UXUwCnZ4ibhLzkmxuScTxz0rCq_kgJy35pa2tSq229GIMzMPVQ8P',
+                    center: currentLocation, // Set the center of the map to current location
+                    zoom: 12 // Set initial zoom level
+                });
+
+                fetchCoordinates();
+            });
+        }
+
+        function fetchCoordinates() {
+            fetch('/getLocation')
+                .then(response => response.json())
+                .then(data => {
+                    const filteredData = data.filter(entry => entry.complete !== true && entry.reject === false);
+                    filteredData.forEach(entry => {
+                        const latitude = parseFloat(entry.latitude);
+                        const longitude = parseFloat(entry.longitude);
+                        if (isValidCoordinate(latitude) && isValidCoordinate(longitude)) {
+                            plotCoordinate(latitude, longitude, entry); // Pass entry data to plotCoordinate function
+                        } else {
+                            console.error(`Invalid coordinate: latitude ${latitude}, longitude ${longitude}`);
+                        }
+                    });
+                })
+                .catch(error => console.error('Error fetching coordinates:', error));
+        }
+
+        function isValidCoordinate(coordinate) {
+            return !isNaN(coordinate) && coordinate >= -90 && coordinate <= 90;
+        }
+
+        function plotCoordinate(latitude, longitude, entry) {
+            const location = new Microsoft.Maps.Location(latitude, longitude);
+            const pin = new Microsoft.Maps.Pushpin(location, {
+                color: 'blue' // Set color of the pushpin to blue
+            });
+
+            // Add click event listener to the pin
+            Microsoft.Maps.Events.addHandler(pin, 'click', function () {
+                // Zoom in on the clicked pin
+                map.setView({ center: location, zoom: 15 }); // Zoom level set to 15 for closer view
+            });
+
+            map.entities.push(pin);
+        }
+
+
+        document.getElementById('menu-icon').addEventListener('click', function() {
+    const menuOptions = document.getElementById('menu-options');
+
+    if (menuOptions.style.display === 'none' || menuOptions.style.display === '') {
+        menuOptions.style.display = 'block';
+    } else {
+        menuOptions.style.display = 'none';
+    }
+});
+
+document.addEventListener('click', function(event) {
+    const menuOptions = document.getElementById('menu-options');
+    const menuIcon = document.getElementById('menu-icon');
+
+    if (!menuOptions.contains(event.target) && event.target !== menuIcon) {
+        menuOptions.style.display = 'none';
+    }
+});
+    </script>
+    <script type="text/javascript"
+        src="https://www.bing.com/api/maps/mapcontrol?key=ArSGwElpgs65UXUwCnZ4ibhLzkmxuScTxz0rCq_kgJy35pa2tSq229GIMzMPVQ8P&callback=initMap"
+        async defer></script>
+</body>
+
+</html>

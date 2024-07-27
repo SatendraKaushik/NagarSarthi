@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Completed</title>
+    <style>
+      body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        width: 80%;
+        margin: 20px auto;
+        background: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+      .header {
+        background-color: #4CAF50;
+        color: white;
+        text-align: center;
+        padding: 20px;
+      }
+      .header h1 {
+        margin: 0;
+        font-size: 2.5em;
+      }
+      .content {
+        padding: 20px;
+        text-align: center;
+      }
+      .content p {
+        font-size: 1.2em;
+        color: #333;
+      }
+      .content .celebrate {
+        margin-top: 20px;
+        font-size: 1.5em;
+        color: #ff6f61;
+        animation: celebration 1s infinite alternate;
+      }
+      @keyframes celebration {
+        0% { transform: scale(1); }
+        100% { transform: scale(1.1); }
+      }
+      .footer {
+        background-color: #4CAF50;
+        color: white;
+        text-align: center;
+        padding: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>Nagar Sarthi Update</h1>
+      </div>
+      <div class="content">
+        <p>Hello,</p>
+        <p>We are thrilled to inform you that your task has been successfully completed.</p>
+        <p class="celebrate">🎉 Congratulations! 🎉</p>
+        <p>If you have any further questions or need additional assistance, please do not hesitate to reach out.</p>
+      </div>
+      <div class="footer">
+        <p>&copy; 2024 Your Company. All rights reserved.</p>
+      </div>
+    </div>
+  </body>
+  </html>

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            /* background-color: #f4f4f4; */
+            background-color: #d4f7ed;
+
+            
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        #details-container {
+            /* max-width: 800px; */
+            width: 1300px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        table td,
+        table th {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        img {
+            max-width: 280px;
+            height: auto;
+            display: block;
+            margin: 0 auto 10px;
+            border-radius: 8px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-right: 10px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        .reason-input {
+            display: block;
+            width: 100%;
+            padding: 8px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Details</h1>
+    <div id="details-container">
+        <!-- Data will be dynamically inserted here -->
+        <table>
+            <tr>
+                <th>Field</th>
+                <th>Value</th>
+            </tr>
+            <tr>
+                <td>Name</td>
+                <td id="name"></td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td id="email"></td>
+            </tr>
+            <tr>
+                <td>Phone Number</td>
+                <td id="phone"></td>
+            </tr>
+            <tr>
+                <td>Address</td>
+                <td id="address"></td>
+            </tr>
+            <tr>
+                <td>Coordinates</td>
+                <td id="coordinates"></td>
+            </tr>
+            <tr>
+                <td>Description</td>
+                <td id="Description"></td>
+            </tr>
+            <tr>
+                <td>Response</td>
+                <td id="Reason"></td>
+            </tr>
+            <tr>
+                <td>Image</td>
+                <td id="image"></td>
+            </tr>
+            <tr>
+                <td>IssuedDate</td>
+                <td id="date"></td>
+            </tr>
+            <tr>
+                <td>CompleteDate</td>
+                <td id="dateTime"></td>
+            </tr>
+            <tr>
+                <td>WorkDone</td>
+                <td id="uploadPath"></td>
+            </tr>
+        </table>
+    </div>
+
+    <script>
+        // Function to parse URL parameters
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+    
+        // Function to fetch details of a specific card
+        function fetchDetailsById(id) {
+            // Fetch data for the specific card based on the provided ID
+            fetch(`/getDetailsById?id=${id}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Display details of the card
+                    document.getElementById('name').textContent = data.name;
+                    document.getElementById('email').textContent = data.email;
+                    document.getElementById('phone').textContent = data.PhoneNumber;
+                    document.getElementById('address').textContent = data.address;
+                    document.getElementById('Description').textContent = data.description;
+                    document.getElementById('coordinates').textContent = `${data.latitude}, ${data.longitude}`;
+                    document.getElementById('image').innerHTML = `<img src="${data.imagePath}" alt="Image">`;
+                    document.getElementById('date').textContent = new Date(data.date).toLocaleDateString();
+                    document.getElementById('dateTime').textContent = new Date(data.dateTime).toLocaleDateString();
+                    // document.getElementById('uploadPath').innerHTML = `<a href="#" onclick="downloadFile('${data.uploadPath}')">${data.uploadPath}</a>`;
+                    document.getElementById('uploadPath').innerHTML = `<img src="${data.completefile}" alt="Processing">`
+                    // Check if accept, reject, or hold choices are present
+                    if ( data.reject) {
+                        // Hide the buttons
+                        document.getElementById('Reason').textContent = data.reason;
+                    } else {
+                        document.getElementById('Reason').textContent = data.remark;
+                    }
+                })
+                .catch(error => console.error('Error fetching details:', error));
+        }
+    
+        // Get the ID from the URL parameter
+        const id = getUrlParameter('id');
+    
+        // Call fetchDetailsById with the retrieved ID
+        fetchDetailsById(id);
+    
+        // Function to send the choice to the backend
+        function sendChoice(choice) {
+            // If choice is reject or hold, show reason input
+            if (choice === 'reject' || choice === 'hold') {
+                document.getElementById('reason-input-row').style.display = 'table-row';
+            } else {
+                // Otherwise, directly send the choice without reason
+                fetch(`/submitForm`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ id, choice })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Handle response from the backend if needed
+                        if (choice === 'accept') {
+                            window.location.href = '/cards.html';
+                        }
+                        console.log(data);
+                    })
+                    .catch(error => console.error('Error sending choice:', error));
+            }
+        }
+    
+        // Function to show reason input for reject or hold
+        function showReasonInput(choice) {
+            document.getElementById('reason-input-row').style.display = 'table-row';
+            document.getElementById('reasonInput').setAttribute('data-choice', choice);
+        }
+    
+        // Function to send choice with reason to the backend
+        function sendChoiceWithReason() {
+            const choice = document.getElementById('reasonInput').getAttribute('data-choice');
+            const reason = document.getElementById('reasonInput').value;
+    
+            fetch(`/submitForm`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ id, choice, reason })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Handle response from the backend if needed
+                    console.log(data);
+    
+                    window.location.href = '/cards.html';
+    
+                })
+                .catch(error => console.error('Error sending choice with reason:', error));
+        }
+    
+        // Function to download file
+        function downloadFile(filePath) {
+            // Create a temporary anchor element
+            var link = document.createElement('a');
+            link.href = filePath;
+            link.download = filePath.split('/').pop(); // Extract filename from path
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+    
+</body>
+
+</html>

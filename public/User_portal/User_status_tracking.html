@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nagar Sarthi - Issues Status</title>
+   
+    <link rel="stylesheet" href="user_status_tracking.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        .icon{
+            /* margin-top: 40px; */
+            position: relative;
+            top: 40px;
+        }
+     </style>
+</head>
+
+<body>
+    <nav class="navbar hidden-text" id="animated-text">
+        <div class="navbar-brand" style="font-size: 42px; color :rgb(255, 255, 255); font-family: 'Playfair Display', sans-serif; font-weight: 200;">Nagar Sarthi</div>
+        <ul class="navbar-nav">
+            <li><a href="../User_portal/user_home.html">Home</a></li>
+            <li><a href="../User_portal/User_Issues.html">Issues</a></li>
+            <li><a href="../User_portal/User_raise_issue.html">Raise Issue</a></li>
+            <li><a href="#">Issue Status</a></li>
+            <li style="font-size: 25px;"><i class="fas fa-bars" id="menu-icon"></i></li>
+                <ul class="menu-options" id="menu-options">
+                    <div style="border: 2px solid black; " id="menu-div">
+                        <div>
+                            <div style="background-image: url(HOME_PAGE_IMAGES/sahilverma.jpg); background-size: cover; height: 90px; width: 90px; border-radius: 50%; margin: auto; margin-top: 20px;"></div>
+                            <div><h3 style="margin: auto;"> </h3></div>
+                        </div>
+                    </div>
+                </ul>
+        </ul>
+    </nav>
+    
+    
+
+        <main class="content">
+            <div id="data-container">
+                <!-- Data will be dynamically inserted here -->
+            </div>
+        </main>
+   
+
+
+
+
+        <footer >
+            <div class="footer">
+            <div class="row">
+            <ul>
+            <li><a href="#">Sahil Verma</a></li>
+            <li><a href="#">Saniya Sharma</a></li>
+            <li><a href="#">Satender Kaushik</a></li>
+            <li><a href="#">Sakshi Pal</a></li>
+            
+            </ul>
+            </div>
+            <hr style="margin-top: 10px; border: 1px dashed rgb(66, 61, 61);">
+            <div class="row" style="margin-top: 10px;">
+            Nagar Sarthi Copyright © 2024 - All rights reserved || Designed By: Team Glory 
+            </div>
+            </div>
+        </footer>
+
+
+
+    <script src="location.js"></script>
+    <script>
+        // Function to fetch data from the backend and display it in the main container
+        function fetchDataAndDisplay() {
+            fetch('/getUserData')
+                .then(response => response.json())
+                .then(data => {
+                    const dataContainer = document.getElementById('data-container');
+
+                    // Clear previous content
+                    dataContainer.innerHTML = '';
+
+                    // Loop through the data array and create a card for each entry
+                    data.forEach(entry => {
+                       
+                            const card = document.createElement('div');
+                            card.classList.add('card');
+
+                            const cardLink = document.createElement('a');
+                            cardLink.classList.add('card-link'); // Add class for styling
+                            cardLink.href = `User_problems_details.html?id=${entry._id}`; // Pass ID in URL
+
+                            const image = document.createElement('img');
+                            image.src = entry.imagePath;
+                            image.alt = 'Fetched Image';
+
+                            const whatsapp = document.createElement("a");
+                           const twitter = document.createElement("a");
+
+                            const infoContainer = document.createElement('div');
+                            infoContainer.classList.add('info-container');
+
+                            // Content container for description and other content
+                            const contentContainer = document.createElement('div');
+                            contentContainer.classList.add('content-container');
+
+                            const descriptionLabel = document.createElement('span');
+                            descriptionLabel.classList.add('label');
+                            descriptionLabel.textContent = "Description:";
+
+                            const description = document.createElement('span');
+                            description.textContent = entry.description;
+
+                            const address = document.createElement('span');
+                            address.textContent = entry.address;
+
+                            const dateLabel = document.createElement('span'); // Create span for date
+                            dateLabel.classList.add('label');
+                            dateLabel.textContent = "Date:";
+
+                            const date = document.createElement('span'); // Create span for date value
+                            date.textContent = new Date(entry.date).toLocaleDateString(); // Convert date to local string format
+
+                            const statusContainer = document.createElement('div');
+                            statusContainer.classList.add('status-range');
+                            count=0;
+                            let status = "Pending"; // Default status
+                            let width = "0%"; // Default width
+                            let remark = ""; // Default remark
+                            let statusBarClass = ""; // Default class for status bar
+                            let processLabel='';
+                            let processText='';
+                            // Check status and set appropriate values
+                            if (entry.accept && !entry.complete) {
+                                status = "Accepted";
+                                width = "50%";
+                                statusBarClass = "complete";
+                                count=1;
+                                
+                                processLabel = document.createElement('span');
+                                processLabel.classList.add('label');
+                                processLabel.textContent = "Process:";
+
+                                processText = document.createElement('span');
+                                processText.textContent = "Send To Clerk";
+                                
+                            } else if (entry.accept && entry.complete) {
+                                status = "Completed";
+                                width = "100%";
+                                statusBarClass = "accept";
+                            } else if (entry.reject) {
+                                width = "100%";
+                                status = "Rejected";
+                                remark = entry.reason;
+                                statusBarClass = "reject";
+                            }
+
+                            // Fetch and set remark if the status is Completed
+                            if (status === "Completed") {
+                                remark = entry.remark;
+                            }
+
+                            // Set the width and class of the status bar
+                            statusContainer.innerHTML = `<div class="status-bar ${statusBarClass}" style="width: ${width};"></div>`;
+
+                            const statusLabel = document.createElement('span');
+                            statusLabel.classList.add('label');
+                            statusLabel.textContent = "Status:";
+
+                            const statusText = document.createElement('span');
+                            statusText.textContent = status;
+
+                            // Create element for displaying remark
+                            const remarkContainer = document.createElement('div');
+                            remarkContainer.classList.add('label');
+                            remarkContainer.textContent = "Remark: " + remark;
+
+                            whatsapp.href = "https://web.whatsapp.com/"; // Set the WhatsApp website URL
+                        whatsapp.target = "_blank"; // Open in a new tab
+                        whatsapp.innerHTML = '<img src="https://img.icons8.com/?size=256&id=16713&format=png" class="icon" alt="WhatsApp" style="width: 40px; height: 40px ;margin-right:1px">'; // Set the WhatsApp image
+
+
+                        twitter.href = "https://x.com/i/flow/login"; // Set the WhatsApp website URL
+                        twitter.target = "_blank"; // Open in a new tab
+                        twitter.innerHTML = '<img src="https://img.icons8.com/?size=256&id=phOKFKYpe00C&format=png" class=" icon" alt="WhatsApp" style="width: 40px; height: 38px ;margin-left:10px ;">'; // Set the WhatsApp image
+
+
+                            // Append elements to the content container
+                            contentContainer.appendChild(descriptionLabel);
+                            contentContainer.appendChild(description);
+                            contentContainer.appendChild(document.createElement('br')); // Add line break
+                            contentContainer.appendChild(dateLabel); // Append date label
+                            contentContainer.appendChild(date); // Append date value
+                            contentContainer.appendChild(document.createElement('br'));
+                            if(count===1){
+                                contentContainer.appendChild(processLabel); // Append process label
+                                contentContainer.appendChild(processText); // Append process text
+                                contentContainer.appendChild(document.createElement('br'));
+                            } // Add line break
+                            contentContainer.appendChild(statusLabel);
+                            contentContainer.appendChild(statusText);
+                            // Add line break
+
+                            // Append remark container if remark is available and status is Completed
+                            if (remark && (status === "Completed" || status === "Rejected")) {
+                                contentContainer.appendChild(document.createElement('br')); // Add line break
+                                contentContainer.appendChild(remarkContainer);
+                            }
+
+                            // Append image and content container to the info container
+                            infoContainer.appendChild(image);
+                            infoContainer.appendChild(contentContainer);
+                            // Append content to the link
+                            cardLink.appendChild(infoContainer);
+                            
+                            // Append link to the card
+                            contentContainer.appendChild(statusContainer);
+                            card.appendChild(cardLink);
+
+                            // Append card to the data container
+                            dataContainer.appendChild(card);
+                            contentContainer.appendChild(whatsapp)
+                        contentContainer.appendChild(twitter)
+                        }
+                    );
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        }
+
+        // Call the fetchDataAndDisplay function when the page loads
+        window.onload = fetchDataAndDisplay;
+
+
+        document.getElementById('menu-icon').addEventListener('click', function() {
+    const menuOptions = document.getElementById('menu-options');
+
+    if (menuOptions.style.display === 'none' || menuOptions.style.display === '') {
+        menuOptions.style.display = 'block';
+    } else {
+        menuOptions.style.display = 'none';
+    }
+});
+
+document.addEventListener('click', function(event) {
+    const menuOptions = document.getElementById('menu-options');
+    const menuIcon = document.getElementById('menu-icon');
+
+    if (!menuOptions.contains(event.target) && event.target !== menuIcon) {
+        menuOptions.style.display = 'none';
+    }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+</body>
+
+</html>

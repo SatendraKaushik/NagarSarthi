@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Work Done</title>
+    <link rel="stylesheet" href="../Admin_department_office/Admin_work_form.css">
+</head>
+
+<body>
+    <h1>Details</h1>
+    <div id="details-container">
+        <!-- Data will be dynamically inserted here -->
+        <table>
+            <tr>
+                <th>Field</th>
+                <th>Value</th>
+            </tr>
+            <tr>
+                <td>Name</td>
+                <td id="name"></td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td id="email"></td>
+            </tr>
+            <tr>
+                <td>Phone Number</td>
+                <td id="phone"></td>
+            </tr>
+            <tr>
+                <td>Address</td>
+                <td id="address"></td>
+            </tr>
+            <tr>
+                <td>Coordinates</td>
+                <td id="coordinates"></td>
+            </tr>
+            <tr>
+                <td>Description</td>
+                <td id="Description"></td>
+            </tr>
+            <tr>
+                <td>Image</td>
+                <td id="image"></td>
+            </tr>
+            <tr>
+                <td>Date</td>
+                <td id="date"></td>
+            </tr>
+            <tr>
+                <td>Upload Path</td>
+                <td id="uploadPath"></td>
+            </tr>
+            <tr>
+                <td>Upload Image</td>
+                <td> <input type="file" accept="image/jpeg, image/png"  onchange="handleFile(this)">
+                    <input type="hidden" name="fileInput"  id="fileInput"> <!-- Hidden input for the data URL --></td>
+            </tr>
+            <tr id="complete-row" style="display: none;">
+                <td colspan="2">
+                    <button class="btn" onclick="openRemarkInput()">Complete</button>
+                </td>
+            </tr>
+            <tr id="reason-input-row">
+                <td colspan="2">
+                    <input type="text" id="remarkInput" class="reason-input" placeholder="Enter remark...">
+                    <button class="btn" onclick="submitRemark('complete')" id="sendEmailBtn3">Submit</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <script>
+       
+       let name_mail = document.querySelector("#name").innerText;
+       console.log("Your name is ", name_mail);
+        document.getElementById('sendEmailBtn3').addEventListener('click', function() {
+                    fetch('/sendemail', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: `${document.querySelector("#name").innerText}`,
+                    email: `${document.querySelector("#email").innerText}`,
+                    message: `Dear ${document.querySelector("#name").innerText},\n\n Your problem has been completed by Nagar Nigam. You can check that work and give your valuable feedback.\n\n\t Thanks !! `,
+                    msg:`Completed`
+                })
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log('Email sent successfully');
+                } else {
+                    console.error('Error sending email');
+                }
+            })
+            .catch(error => {
+                console.error('Error sending email:', error);
+           });
+        });
+    </script>
+    <script>
+        // Function to parse URL parameters
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+
+        // Function to fetch details of a specific card
+        function fetchDetailsById(id) {
+            // Fetch data for the specific card based on the provided ID
+            fetch(`/getDetailsById?id=${id}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Display details of the card
+                    document.getElementById('name').textContent = data.name;
+                    document.getElementById('email').textContent = data.email;
+                    document.getElementById('phone').textContent = data.PhoneNumber;
+                    document.getElementById('address').textContent = data.address;
+                    document.getElementById('Description').textContent = data.description;
+                    document.getElementById('coordinates').textContent = `${data.latitude}, ${data.longitude}`;
+                    document.getElementById('image').innerHTML = `<img src="${data.imagePath}" alt="Image">`;
+                    document.getElementById('date').textContent = new Date(data.date).toLocaleDateString();
+                    document.getElementById('uploadPath').innerHTML = `<img src="${data.uploadPath}" alt="Image">`
+                    // Check if accept
+                    document.getElementById('button-row').style.display = 'none';
+            document.getElementById('complete-row').style.display = 'table-row';
+            document.getElementById('reason-input-row').style.display = 'table-row';
+        })
+              
+                .catch(error => console.error('Error fetching details:', error));
+        }
+
+        // Get the ID from the URL parameter
+        const id = getUrlParameter('id');
+
+        // Call fetchDetailsById with the retrieved ID
+        fetchDetailsById(id);
+
+        // Function to open remark input
+        function openRemarkInput() {
+            document.getElementById('reason-input-row').style.display = 'table-row';
+        }
+        function handleFile(input) {
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const uploadDataURL = e.target.result;
+                    document.getElementById('fileInput').value = uploadDataURL;
+                    console.log(uploadDataURL);
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+        // Function to submit remark
+        // Function to submit remark along with date and time
+        // Function to submit remark along with date and time
+function submitRemark() {
+    const remark = document.getElementById('remarkInput').value;
+    const fileInput = document.getElementById('fileInput').value; // Get the selected file
+
+    // Check if remark is empty
+    if (remark.trim() === '') {
+        alert('Please enter a remark before submitting.');
+        return; // Exit the function if remark is empty
+    }
+
+    if (!fileInput) {
+        alert('Please select a file before submitting.');
+        return; // Exit the function if no file is selected
+    }
+
+
+    const currentDate = new Date().toISOString(); // Get current date and time
+
+    fetch(`/submitRemark`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ id, remark, dateTime: currentDate, complete: true, completefile:fileInput }) // Include dateTime in the request body
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Handle response from the backend if needed
+        window.location.href = '../Admin_department_office/Admin_accepted_problems.html'; // Redirect to success page
+    })
+    .catch(error => console.error('Error submitting remark:', error));
+    }
+
+
+    </script>
+</body>
+
+</html>

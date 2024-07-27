@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Problem Details</title>
+    <link rel="stylesheet" href="../Admin_department_office/Admin_problem_details.css">
+</head>
+
+<body>
+    <h1>Problem Details</h1>
+    <div id="details-container">
+        <!-- Data will be dynamically inserted here -->
+        <table>
+            <tr>
+                <th>Field</th>
+                <th>Value</th>
+            </tr>
+            <tr>
+                <td>Name</td>
+                <td id="name"></td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td id="email"></td>
+            </tr>
+            <tr>
+                <td>Phone Number</td>
+                <td id="phone"></td>
+            </tr>
+            <tr>
+                <td>Address</td>
+                <td id="address"></td>
+            </tr>
+            <tr>
+                <td>Coordinates</td>
+                <td id="coordinates"></td>
+            </tr>
+            <tr>
+                <td>Description</td>
+                <td id="Description"></td>
+            </tr>
+            <tr>
+                <td>AI Response</td>
+                <td id="AI"></td>
+            </tr>
+            <tr>
+                <td>Image</td>
+                <td id="image"></td>
+            </tr>
+            <tr>
+                <td>Date</td>
+                <td id="date"></td>
+            </tr>
+            <tr>
+                <td>Upload Path</td>
+                <td id="uploadPath"></td>
+            </tr>
+            <tr id="button-row">
+                <td colspan="2">
+                    <button class="btn" onclick="sendChoice('accept')" id="sendEmailBtn">Accept</button>
+                    <button class="btn" onclick="showReasonInput('reject') " id="sendEmailBtn2">Reject</button>
+                    <!-- <button class="btn" onclick="showReasonInput('hold')">Hold</button> -->
+                </td>
+            </tr>
+            <tr id="reason-input-row" style="display: none;">
+                <td colspan="2">
+                    <input type="text" id="reasonInput" class="reason-input" placeholder="Enter reason...">
+                    <button class="btn" onclick="sendChoiceWithReason()">Submit</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+
+<script>
+    
+    let name = document.querySelector("#name").innerText ;
+    
+    document.getElementById('sendEmailBtn').addEventListener('click', function() {
+                    fetch('/sendemail', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: `${document.querySelector("#name").innerText}`,
+                    email: `${document.querySelector("#email").innerText}`,
+                    message: `Dear ${document.querySelector("#name").innerText}, Your problem has been accepted by Nagar Nigam and the working on it will be starting soon.Thanks !! `
+                })
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log('Email sent successfully');
+                } else {
+                    console.error('Error sending email');
+                }
+            })
+            .catch(error => {
+                console.error('Error sending email:', error);
+           });
+        });
+    
+
+
+        // 
+        document.getElementById('sendEmailBtn2').addEventListener('click', function() {
+                    fetch('/sendemail', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: `${name}`,
+                    email: `${document.querySelector("#email")}`,
+                    message: `Dear ${name} , \n We regret to inform you that your problem is rejected by Nagar Nigam due to some reasons. \n\t Sorry !! \n Remark : ${reasonInput.innerText} `
+                })
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log('Email sent successfully');
+                } else {
+                    console.error('Error sending email');
+                }
+            })
+            .catch(error => {
+                console.error('Error sending email:', error);
+           });
+        });
+
+    
+
+</script>
+
+    <script type="module">
+         import { GoogleGenerativeAI } from "https://cdn.skypack.dev/@google/generative-ai";
+      async function fetchData(imageURL) {
+        const data = document.getElementById("Description").textContent;
+        // This line may need adjustment to actually fetch image data
+        const API_KEY = "AIzaSyC8VcvCvdcVUdq-P1IZ5qWPCjbqXhSEjis"; // Replace with your Google API Key
+        const genAI = new GoogleGenerativeAI(API_KEY);
+        // console.log(imageData)
+        // For text-only input, use the gemini-pro model
+        const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+
+        const url = "https://open-ai21.p.rapidapi.com/imagecaptioning";
+        const imageData = await fetch(imageURL);
+        const imageBlob = await imageData.blob();
+        const formData = new FormData();
+        formData.append("file", imageBlob, "image.jpg");
+        const options = {
+          method: "POST",
+          headers: {
+            "X-RapidAPI-Key":
+              "a102489748msh991ced42a84169bp129e66jsnf2831c8b97b0", // Replace with your RapidAPI Key
+            "X-RapidAPI-Host": "open-ai21.p.rapidapi.com",
+          },
+          body: formData, // Corrected variable name
+        };
+
+        try {
+          const openresponse = await fetch(url, options);
+          const result = await openresponse.text();
+          console.log(result);
+
+          // Remove special characters using regex
+          // Remove special characters using regex
+          const cleanResult = result.replace(/[^\w\s]/gi, "");
+
+          const prompt = `provide the time and money using ${cleanResult} and ${data}
+        step1:provide estimate time and money taken to solve the problem,
+        step3:provide answer as a nagar palika or mcd will solve the problem,
+        step4:give details about how they solved it.
+        step2:if you dont able to provide time and money then give a generic statement which is like usually time taken to solve such problem is this and money,
+        step4:also mention quantity,
+        step5:only in 3 line
+        `;
+
+          const Gemeiniresult = await model.generateContent(prompt);
+
+          const response = await Gemeiniresult.response;
+          const text = await response.text();
+        //   const limitedInput = text.slice(0, 400);
+          // Display bot response
+          console.log(text);
+          document.getElementById("AI").textContent = text;
+        } catch (error) {
+          console.error(error);
+        }
+      }
+
+        fetchData();
+
+
+
+
+    </script>
+    <script>
+
+
+        // Function to parse URL parameters
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+
+        // Function to fetch details of a specific card
+        function fetchDetailsById(id) {
+            // Fetch data for the specific card based on the provided ID
+            fetch(`/getDetailsById?id=${id}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Display details of the card
+                    document.getElementById('name').textContent = data.name;
+                    document.getElementById('email').textContent = data.email;
+                    document.getElementById('phone').textContent = data.PhoneNumber;
+                    document.getElementById('address').textContent = data.address;
+                    document.getElementById('Description').textContent = data.description;
+                    document.getElementById('coordinates').textContent = `${data.latitude}, ${data.longitude}`;
+                    document.getElementById('image').innerHTML = `<img src="${data.imagePath}" alt="Image">`;
+                    document.getElementById('date').textContent = new Date(data.date).toLocaleDateString();
+                    // document.getElementById('uploadPath').innerHTML = `<a href="#" onclick="downloadFile('${data.uploadPath}')">${data.uploadPath}</a>`;
+                    document.getElementById('uploadPath').innerHTML = `<img src="${data.uploadPath}" alt="Image">`
+                    // Check if accept, reject, or hold choices are present
+                    if (data.accept || data.reject || data.hold) {
+                        // Hide the buttons
+                        document.getElementById('button-row').style.display = 'none';
+                    } else {
+                        // Show the buttons
+                        document.getElementById('button-row').style.display = 'table-row';
+                    }
+                })
+                .catch(error => console.error('Error fetching details:', error));
+        }
+
+        // Get the ID from the URL parameter
+        const id = getUrlParameter('id');
+
+        // Call fetchDetailsById with the retrieved ID
+        fetchDetailsById(id);
+
+        // Function to send the choice to the backend
+        function sendChoice(choice) {
+            // If choice is reject or hold, show reason input
+            if (choice === 'reject' || choice === 'hold') {
+                document.getElementById('reason-input-row').style.display = 'table-row';
+            } else {
+                // Otherwise, directly send the choice without reason
+                fetch(`/AdminsubmitForm`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ id, choice })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Handle response from the backend if needed
+                        if (choice === 'accept') {
+                            window.location.href = '../Admin_department_office/Admin_home_problems.html';
+                        }
+                        console.log(data);
+                    })
+                    .catch(error => console.error('Error sending choice:', error));
+            }
+
+        }
+
+        // Function to show reason input for reject or hold
+        function showReasonInput(choice) {
+            document.getElementById('reason-input-row').style.display = 'table-row';
+            document.getElementById('reasonInput').setAttribute('data-choice', choice);
+        }
+
+        // Function to send choice with reason to the backend
+        function sendChoiceWithReason() {
+            const choice = document.getElementById('reasonInput').getAttribute('data-choice');
+            const reason = document.getElementById('reasonInput').value;
+
+            fetch(`/AdminsubmitForm`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ id, choice, reason })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Handle response from the backend if needed
+                    console.log(data);
+
+                    window.location.href = '../Admin_department_office/Admin_home_problems.html';
+
+                })
+                .catch(error => console.error('Error sending choice with reason:', error));
+        }
+
+        // Function to download file
+        function downloadFile(filePath) {
+            // Create a temporary anchor element
+            var link = document.createElement('a');
+            link.href = filePath;
+            link.download = filePath.split('/').pop(); // Extract filename from path
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+
+
+
+    </script>
+
+</body>
+
+</html>

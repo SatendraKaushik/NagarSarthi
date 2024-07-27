@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Problem Details</title>
+    <link rel="stylesheet" href="../Admin_department_office/Admin_problem_details.css">
+</head>
+
+<body>
+    <h1>Problem Details</h1>
+    <div id="details-container">
+        <!-- Data will be dynamically inserted here -->
+        <table>
+            <tr>
+                <th>Field</th>
+                <th>Value</th>
+            </tr>
+            <tr>
+                <td>Name</td>
+                <td id="name"></td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td id="email"></td>
+            </tr>
+            <tr>
+                <td>Phone Number</td>
+                <td id="phone"></td>
+            </tr>
+            <tr>
+                <td>Address</td>
+                <td id="address"></td>
+            </tr>
+            <tr>
+                <td>Coordinates</td>
+                <td id="coordinates"></td>
+            </tr>
+            <tr>
+                <td>Description</td>
+                <td id="Description"></td>
+            </tr>
+            <tr>
+                <td>AI Response</td>
+                <td id="AI" style="color: rgb(30, 37, 239);"></td>
+            </tr>
+            <tr>
+                <td>Image</td>
+                <td id="image"></td>
+            </tr>
+            <tr>
+                <td>Date</td>
+                <td id="date"></td>
+            </tr>
+            <tr>
+                <td>Upload Path</td>
+                <td id="uploadPath"></td>
+            </tr>
+            <tr id="button-row">
+                <td colspan="2">
+                    <button class="btn" onclick="sendChoice('accept')" id="sendEmailBtn"
+                        style="margin-left: 400px; background-color: rgb(58, 193, 58);">Accept</button>
+                    <button class="btn" onclick="showReasonInput('reject') " id="sendEmailBtn2"
+                        style="background-color: rgb(240, 43, 43);">Reject</button>
+                    <!-- <button class="btn" onclick="showReasonInput('hold')">Hold</button> -->
+                </td>
+            </tr>
+            <tr id="reason-input-row" style="display: none;">
+                <td colspan="2">
+                    <input type="text" id="reasonInput" class="reason-input" placeholder="Enter reason...">
+                    <button class="btn" onclick="sendChoiceWithReason()">Submit</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+
+    <script>
+
+        let name = document.querySelector("#name").innerText;
+
+        document.getElementById('sendEmailBtn').addEventListener('click', function () {
+            fetch('/sendemail', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: `${document.querySelector("#name").innerText}`,
+                    email: `${document.querySelector("#email").innerText}`,
+                    message: `Dear ${document.querySelector("#name").innerText}, Your problem has been accepted by Nagar Nigam and the working on it will be starting soon.Thanks !! `,
+                    msg: `Accepted`
+                })
+            })
+                .then(response => {
+                    if (response.ok) {
+                        console.log('Email sent successfully');
+                    } else {
+                        console.error('Error sending email');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error sending email:', error);
+                });
+        });
+
+
+
+        // 
+        document.getElementById('sendEmailBtn2').addEventListener('click', function () {
+            fetch('/sendemail', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: `${name}`,
+                    email: `${document.querySelector("#email")}`,
+                    message: `Dear ${name} , \n We regret to inform you that your problem is rejected by Nagar Nigam due to some reasons. \n\t Sorry !! \n Remark : ${reasonInput.innerText} `,
+                    msg: `Rejected`
+                })
+            })
+                .then(response => {
+                    if (response.ok) {
+                        console.log('Email sent successfully');
+                    } else {
+                        console.error('Error sending email');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error sending email:', error);
+                });
+        });
+
+
+
+    </script>
+
+
+    <script>
+
+
+        // Function to parse URL parameters
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+
+        // Function to fetch details of a specific card
+        function fetchDetailsById(id) {
+            // Fetch data for the specific card based on the provided ID
+            fetch(`/getDetailsById?id=${id}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Display details of the card
+                    document.getElementById('name').textContent = data.name;
+                    document.getElementById('email').textContent = data.email;
+                    document.getElementById('phone').textContent = data.PhoneNumber;
+                    document.getElementById('address').textContent = data.address;
+                    document.getElementById('Description').textContent = data.description;
+                    document.getElementById('coordinates').textContent = `${data.latitude}, ${data.longitude}`;
+                    document.getElementById('image').innerHTML = `<img src="${data.imagePath}" id="fetchedImage"  alt="Image">`;
+                    document.getElementById('date').textContent = new Date(data.date).toLocaleDateString();
+                    // document.getElementById('uploadPath').innerHTML = `<a href="#" onclick="downloadFile('${data.uploadPath}')">${data.uploadPath}</a>`;
+                    document.getElementById('uploadPath').innerHTML = `<img src="${data.uploadPath}" alt="Image">`
+                    // Check if accept, reject, or hold choices are present
+                    if (data.accept || data.reject || data.hold) {
+                        // Hide the buttons
+                        document.getElementById('button-row').style.display = 'none';
+                    } else {
+                        // Show the buttons
+                        document.getElementById('button-row').style.display = 'table-row';
+                    }
+                })
+                .catch(error => console.error('Error fetching details:', error));
+        }
+
+        // Get the ID from the URL parameter
+        const id = getUrlParameter('id');
+
+        // Call fetchDetailsById with the retrieved ID
+        fetchDetailsById(id);
+
+        // Function to send the choice to the backend
+        function sendChoice(choice) {
+            // If choice is reject or hold, show reason input
+            if (choice === 'reject' || choice === 'hold') {
+                document.getElementById('reason-input-row').style.display = 'table-row';
+            } else {
+                // Otherwise, directly send the choice without reason
+                fetch(`/AdminsubmitForm`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ id, choice })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Handle response from the backend if needed
+                        if (choice === 'accept') {
+                            window.location.href = '../Admin_department_office/Admin_home_problems.html';
+                        }
+                        console.log(data);
+                    })
+                    .catch(error => console.error('Error sending choice:', error));
+            }
+
+        }
+
+        // Function to show reason input for reject or hold
+        function showReasonInput(choice) {
+            document.getElementById('reason-input-row').style.display = 'table-row';
+            document.getElementById('reasonInput').setAttribute('data-choice', choice);
+        }
+
+        // Function to send choice with reason to the backend
+        function sendChoiceWithReason() {
+            const choice = document.getElementById('reasonInput').getAttribute('data-choice');
+            const reason = document.getElementById('reasonInput').value;
+
+            fetch(`/AdminsubmitForm`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ id, choice, reason })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Handle response from the backend if needed
+                    console.log(data);
+
+                    window.location.href = '../Admin_department_office/Admin_home_problems.html';
+
+                })
+                .catch(error => console.error('Error sending choice with reason:', error));
+        }
+
+        // Function to download file
+        function downloadFile(filePath) {
+            // Create a temporary anchor element
+            var link = document.createElement('a');
+            link.href = filePath;
+            link.download = filePath.split('/').pop(); // Extract filename from path
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+
+
+
+    </script>
+    <script type="module">
+        import { GoogleGenerativeAI } from "https://cdn.skypack.dev/@google/generative-ai";
+        async function fetchData(imageURL) {
+            const url = 'https://ai-api-photo-description.p.rapidapi.com/description-from-file';
+
+            // Convert Base64 URL to Blob
+            function base64ToBlob(base64) {
+                const byteString = atob(base64.split(',')[1]);
+                const mimeString = base64.split(',')[0].split(':')[1].split(';')[0];
+                const buffer = new ArrayBuffer(byteString.length);
+                const data = new Uint8Array(buffer);
+                for (let i = 0; i < byteString.length; i++) {
+                    data[i] = byteString.charCodeAt(i);
+                }
+                return new Blob([buffer], { type: mimeString });
+            }
+
+            const imageBlob = base64ToBlob(imageURL);
+            const data = new FormData();
+            data.append('image', imageBlob, 'image.png');
+            const options = {
+                method: 'POST',
+                headers: {
+                    'X-RapidAPI-Key': '08f05536a6msh090dfe1fb045ee3p14aafbjsn0dda1460162c',
+                    'X-RapidAPI-Host': 'ai-api-photo-description.p.rapidapi.com'
+                },
+                body: data
+            };
+
+            try {
+                const response = await fetch(url, options);
+                // const result = await response.text();
+                // const caption = result.caption;
+                const result = await response.json(); // Parse the response as JSON
+                const caption = result.caption; // Extract the caption from the result
+                console.log(caption);
+                await GeminiResponse(caption);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        async function GeminiResponse(result) {
+            const data = document.getElementById("Description").textContent;
+            const API_KEY = "AIzaSyC8VcvCvdcVUdq-P1IZ5qWPCjbqXhSEjis"; // Replace with your Google API Key
+            const genAI = new GoogleGenerativeAI(API_KEY);
+            const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+
+            //             const prompt = `provide the time and money using ${result} and ${data}
+            // provide answer in points 
+            // step1: provide estimate time and money taken to solve the problem money should be in indian rupees money should lie between 30000 to 100000 and time should also lie between 7 days to 20 days add a gap between the days,
+            // step2: if you don't able to provide time and money then give a  which is like usually time taken to solve such problem is this and money,
+            // step3: provide answer as a nagar palika or mcd will solve the problem,
+            // step4: give details about how they solved it,
+            // step5: also mention quantity and resources required,
+            // step6: only in 3 lines.`;
+            const prompt = `provide the time and money using ${result} and ${data}
+            Please provide a detailed estimate for solving the specified problem, 
+            ensuring that the time frame is between 7 to 20 days and the cost ranges from ₹30,000 to ₹80,000.\
+             Describe how the Nagar Nigam will solve this problem, including the steps and processes they will undertake.
+              Specify the materials needed to solve the problem,
+               mentioning the quantity of each material, and list any additional resources or 
+               machinery required. For example, you might estimate the time as 10 to 15 days and the cost as ₹50,000 to ₹70,000.
+                The Nagar Nigam might deploy a specialized team to tackle the issue, involving initial assessment, material procurement, and execution. Materials could include cement, sand, and  gravel, while resources might include 20 workers and machinery such as excavators, dump trucks, and road rollers. Ensure the output is precise, fitting within the specified time and cost constraints.
+                the output should have only 100 words and proper spacing 
+                give the output point wise
+
+`;
+
+            try {
+                const GeminiResult = await model.generateContent(prompt);
+                const response = await GeminiResult.response;
+                const text = await response.text();
+                const cleanedText = text.replace(/[^\w\s,.!?]/g, '');
+                console.log(cleanedText);
+                document.getElementById("AI").textContent = cleanedText;
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        setTimeout(() => {
+            const imgElement = document.getElementById('fetchedImage');
+            const imageurl = imgElement.src;
+
+            fetchData(imageurl);
+        }, 1000)
+
+
+    </script>
+</body>
+
+</html>
