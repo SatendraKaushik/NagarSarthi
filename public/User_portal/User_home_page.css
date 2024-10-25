@@ -73,14 +73,15 @@ body{
 
 
 .slider {
-    width: 100vw;
+    /* width: 90vw; */
+    width:100vw;
     height: 570px;
     position: absolute;
     top: 100px;
     overflow: hidden;
     display: flex;
     justify-content: center;
-
+/* left: 5%; */
 }
 
 .slide {

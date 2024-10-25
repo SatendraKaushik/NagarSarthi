@@ -40,6 +40,7 @@
                 <li><a href="#">Raise Issue</a></li>
                 <li><a href="../User_portal/User_status_tracking.html">Issue Status</a></li>
                 <li style="font-size: 25px;"><i class="fas fa-bars" id="menu-icon"></i></li>
+               
                 <ul class="menu-options" id="menu-options">
                     <div style="border: 2px solid black; " id="menu-div">
                         <div>
@@ -64,6 +65,7 @@
 
 
         <main class="content">
+            
             <form id="myForm" action="/submitForm" method="post" style="margin-top: 100px; position: fixed; ">
                 <div id="container">
                     <div class="input-container"
@@ -74,7 +76,13 @@
                         <input type="text" name="address" id="addressInput" placeholder="Address">
                         <input type="text" name="district" id="cityInput" placeholder="City">
                         <!-- New input for city -->
-                        <textarea name="description" id="descriptionBox" placeholder="Enter Description"></textarea>
+                         <div style="display: flex;">
+                            <textarea name="description" id="descriptionBox" placeholder="Enter Description" width="50px"></textarea>
+                            <button type="button" id="startSpeechRecognition"style="border:none; background-color: transparent;" >
+                                <i class="fa-solid fa-microphone-slash" style="color: rgb(19, 19, 19); font-size: 25px;"></i>
+                            </button>
+                         </div>
+                        
                         <select name="department" id="departmentInput">
                             <option value="" selected disabled>Select Department</option>
                             <option value="sach_barat">Sach Barat</option>
@@ -103,11 +111,13 @@
                     <div id="controls">
                         <a id="snap" class="op" onclick="takePicture()">Snap</a>
                         <a class="op" onclick="flipcamera()">Flip Camera</a>
+                     
                     </div>
                     <a class="op" id="snapButton" onclick="showWebcam()" style="margin-left: 10px;">Take Another
                         Photo</a>
                 </div>
             </form>
+         
         </main>
 
     </div>
@@ -327,7 +337,7 @@
         }
 
         async function fetchLocationDetails(coordinates) {
-            // Replace 'YOUR_OPENCAGE_API_KEY' with your actual OpenCage API key
+          
             const apiKey = 'dbf5cac2f04c479c8c514f6567eedef3';
             const apiUrl = `https://api.opencagedata.com/geocode/v1/json?q=${coordinates[0]}+${coordinates[1]}&key=${apiKey}`;
             console.log(`${coordinates[0]},${coordinates[1]}`);
@@ -433,8 +443,53 @@
                 console.error( "error aa raha hai balak " + error);
             }
         }
+        document.addEventListener('DOMContentLoaded', (event) => {
+    const startSpeechRecognitionButton = document.getElementById('startSpeechRecognition');
+    const descriptionBox = document.getElementById('descriptionBox');
 
-    </script>
+    if ('webkitSpeechRecognition' in window) {
+        const recognition = new webkitSpeechRecognition();
+        recognition.continuous = false;
+        recognition.interimResults = false;
+        recognition.lang = 'en-US';
+
+        recognition.onresult = function(event) {
+            const transcript = event.results[0][0].transcript;
+            descriptionBox.value += transcript + ' ';
+        };
+
+        recognition.onerror = function(event) {
+            console.error('Speech recognition error:', event.error);
+            if (event.error === 'not-allowed') {
+                alert('Microphone access is blocked. Please allow microphone access in your browser settings and try again.');
+                startSpeechRecognitionButton.textContent = '<i class="fa-solid fa-microphone-slash" style="font-size:25px"></i>';
+            }
+        };
+
+        startSpeechRecognitionButton.addEventListener('click', function() {
+            // Request microphone permission before starting recognition
+            navigator.mediaDevices.getUserMedia({ audio: true })
+                .then(function(stream) {
+                    stream.getTracks().forEach(track => track.stop());
+                    recognition.start();
+                    startSpeechRecognitionButton.innerHTML = '<i class="fa-solid fa-microphone" style="font-size : 25px;"></i>';
+                })
+                .catch(function(err) {
+                    console.error('Error accessing microphone:', err);
+                    alert('Unable to access the microphone. Please check your browser settings and try again.');
+                });
+        });
+
+        recognition.onend = function() {
+            startSpeechRecognitionButton.innerHTML = '<i class="fa-solid fa-microphone-slash" style="font-size : 25px;"></i>';
+        };
+    } else {
+        startSpeechRecognitionButton.style.display = 'none';
+        console.log('Speech recognition not supported');
+    }
+});
+   
+   </script>
 
 </body>
 

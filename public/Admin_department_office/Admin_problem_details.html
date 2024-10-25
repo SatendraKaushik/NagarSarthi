@@ -140,7 +140,7 @@
 
     <script>
 
-
+const add=document.getElementById("address").innerHTML;
         // Function to parse URL parameters
         function getUrlParameter(name) {
             name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
@@ -165,6 +165,7 @@
                     document.getElementById('image').innerHTML = `<img src="${data.imagePath}" id="fetchedImage"  alt="Image">`;
                     document.getElementById('date').textContent = new Date(data.date).toLocaleDateString();
                     // document.getElementById('uploadPath').innerHTML = `<a href="#" onclick="downloadFile('${data.uploadPath}')">${data.uploadPath}</a>`;
+                    address=data.address;
                     document.getElementById('uploadPath').innerHTML = `<img src="${data.uploadPath}" alt="Image">`
                     // Check if accept, reject, or hold choices are present
                     if (data.accept || data.reject || data.hold) {
@@ -258,69 +259,109 @@
     <script type="module">
         import { GoogleGenerativeAI } from "https://cdn.skypack.dev/@google/generative-ai";
         async function fetchData(imageURL) {
-            const url = 'https://ai-api-photo-description.p.rapidapi.com/description-from-file';
-
-            // Convert Base64 URL to Blob
-            function base64ToBlob(base64) {
-                const byteString = atob(base64.split(',')[1]);
-                const mimeString = base64.split(',')[0].split(':')[1].split(';')[0];
-                const buffer = new ArrayBuffer(byteString.length);
-                const data = new Uint8Array(buffer);
-                for (let i = 0; i < byteString.length; i++) {
-                    data[i] = byteString.charCodeAt(i);
+    const url = 'https://chatgpt-vision1.p.rapidapi.com/matagvision2';
+    
+    const options = {
+        method: 'POST',
+        headers: {
+            'x-rapidapi-key': '08f05536a6msh090dfe1fb045ee3p14aafbjsn0dda1460162c',
+            'x-rapidapi-host': 'chatgpt-vision1.p.rapidapi.com',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            messages: [
+                {
+                    role: 'user',
+                    content: [
+                        {
+                            type: 'text',
+                            text: "what's in the image"
+                        },
+                        {
+                            type: 'image',
+                            url: imageURL
+                        }
+                    ]
                 }
-                return new Blob([buffer], { type: mimeString });
-            }
+            ],
+            web_access: false
+        })
+    };
 
-            const imageBlob = base64ToBlob(imageURL);
-            const data = new FormData();
-            data.append('image', imageBlob, 'image.png');
-            const options = {
-                method: 'POST',
-                headers: {
-                    'X-RapidAPI-Key': '08f05536a6msh090dfe1fb045ee3p14aafbjsn0dda1460162c',
-                    'X-RapidAPI-Host': 'ai-api-photo-description.p.rapidapi.com'
-                },
-                body: data
-            };
-
-            try {
-                const response = await fetch(url, options);
-                // const result = await response.text();
-                // const caption = result.caption;
-                const result = await response.json(); // Parse the response as JSON
-                const caption = result.caption; // Extract the caption from the result
-                console.log(caption);
-                await GeminiResponse(caption);
-            } catch (error) {
-                console.error(error);
-            }
+    try {
+        const response = await fetch(url, options);
+        const result = await response.json(); // Parse the response as JSON
+        console.log('Full API response:', result);
+        
+        if (result.status === true && result.result) {
+            const description = result.result;
+            console.log('Extracted description:', description);
+            await GeminiResponse(description);
+        } else {
+            console.error('Unexpected API response structure:', result);
+            throw new Error('Invalid API response structure');
         }
+    } catch (error) {
+        console.error('Error in fetchData:', error);
+    }
+}
 
-        async function GeminiResponse(result) {
+async function GeminiResponse(des) {
             const data = document.getElementById("Description").textContent;
-            const API_KEY = "AIzaSyC8VcvCvdcVUdq-P1IZ5qWPCjbqXhSEjis"; // Replace with your Google API Key
+            const API_KEY = "AIzaSyC8VcvCvdcVUdq-P1IZ5qWPCjbqXhSEjis"; 
             const genAI = new GoogleGenerativeAI(API_KEY);
             const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+                const op=des;
+                
+          
+            const prompt = `
+You are an advanced AI assistant specialized in cost estimation and project planning for various problems and tasks in India. Your role is to analyze the following operation type and data to provide detailed cost estimates and time projections for solving these issues. Your estimates should be based on current Indian market prices and labor costs.
 
-            //             const prompt = `provide the time and money using ${result} and ${data}
-            // provide answer in points 
-            // step1: provide estimate time and money taken to solve the problem money should be in indian rupees money should lie between 30000 to 100000 and time should also lie between 7 days to 20 days add a gap between the days,
-            // step2: if you don't able to provide time and money then give a  which is like usually time taken to solve such problem is this and money,
-            // step3: provide answer as a nagar palika or mcd will solve the problem,
-            // step4: give details about how they solved it,
-            // step5: also mention quantity and resources required,
-            // step6: only in 3 lines.`;
-            const prompt = `provide the time and money using ${result} and ${data}
-            Please provide a detailed estimate for solving the specified problem, 
-            ensuring that the time frame is between 7 to 20 days and the cost ranges from ₹30,000 to ₹80,000.\
-             Describe how the Nagar Nigam will solve this problem, including the steps and processes they will undertake.
-              Specify the materials needed to solve the problem,
-               mentioning the quantity of each material, and list any additional resources or 
-               machinery required. For example, you might estimate the time as 10 to 15 days and the cost as ₹50,000 to ₹70,000.
-                The Nagar Nigam might deploy a specialized team to tackle the issue, involving initial assessment, material procurement, and execution. Materials could include cement, sand, and  gravel, while resources might include 20 workers and machinery such as excavators, dump trucks, and road rollers. Ensure the output is precise, fitting within the specified time and cost constraints.
-                the output should have only 100 words and proper spacing 
-                give the output point wise
+Operation Type: ${op}
+Input Data: ${data} 
+
+
+Based on the operation type and input data provided above, please analyze the problem and provide the following information:
+
+1. Total Cost Summary:
+   - Provide a clear, prominent total cost estimate in Indian Rupees (₹)
+   - Include a brief one-sentence summary of what this cost covers
+
+2. Material Costs:
+   - List all required materials
+   - Provide current market prices for each material in Indian Rupees (₹)
+   - Calculate the subtotal for material costs
+
+3. Labor Requirements and Costs:
+   - Estimate the number of people required for the task
+   - Specify the types of skilled or unskilled labor needed
+   - Provide the current average hourly or daily wage for each type of worker in India
+   - Calculate the subtotal for labor costs
+
+4. Time Estimation:
+   - Estimate the total time required to complete the task
+   - Break down the time for different phases of the project, if applicable
+
+5. Additional Costs:
+   - Include any overhead, equipment rental, or miscellaneous costs
+   - Provide a subtotal for these additional costs
+
+6. Cost Breakdown:
+   - Clearly show how the total cost is calculated from the subtotals of materials, labor, and additional costs
+
+7. Accuracy and Variability:
+   - Indicate the confidence level of your estimate (e.g., ±10%)
+   - Mention any factors that could significantly affect the cost or time
+
+8. Alternative Solutions:
+   - If applicable, suggest alternative approaches that might be more cost-effective or time-efficient
+   - Provide a brief cost comparison for these alternatives
+
+Please ensure that your estimates are as accurate as possible, taking into account regional price variations within India, seasonal factors, and current market trends. If the operation type or input data lacks critical information, please indicate what additional information would be needed for a more accurate estimate.
+
+Your response should be clear, well-structured, and easy to understand for someone without technical expertise. Use bullet points and subheadings to organize the information effectively. Always start your response with the total cost estimate prominently displayed.
+
+If the operation type requires specific considerations or approaches, please adjust your analysis accordingly. For image-based inputs, describe the relevant details you're basing your estimates on.
 
 `;
 
@@ -328,9 +369,11 @@
                 const GeminiResult = await model.generateContent(prompt);
                 const response = await GeminiResult.response;
                 const text = await response.text();
-                const cleanedText = text.replace(/[^\w\s,.!?]/g, '');
-                console.log(cleanedText);
-                document.getElementById("AI").textContent = cleanedText;
+                // const cleanedText = text.replace(/[^\w\s,.!?]/g, '');
+                const cleanedText = text.replace(/\*/g, '');
+
+                // console.log(cleanedText);
+                document.getElementById("AI").textContent = `address:${address}+${cleanedText}`;
             } catch (error) {
                 console.error(error);
             }

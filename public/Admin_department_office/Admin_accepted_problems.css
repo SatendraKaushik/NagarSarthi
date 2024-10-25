@@ -224,16 +224,17 @@ body {
 
 .card {
     width: 400px;
-    height: 150px;
+    height: 180px;
     border: 1px solid #585858;
     border-radius: 20px;
     padding: 10px;
     display: flex;
     flex-direction: row;
     background-color: rgba(228, 228, 228, 0.955);
-    margin-left: 50px;
+    margin-left: 60px;
     box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
     margin-top: 30px;
+    
 }
 
 

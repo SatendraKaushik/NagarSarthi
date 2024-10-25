@@ -87,6 +87,17 @@ document.getElementById('menu-icon').addEventListener('click', function() {
     } else {
         menuOptions.style.display = 'none';
     }
+    
+    // fetch('/getUserProfileInfo')
+    // .then(response =>  response.json())
+    // .then(data => {
+    //     console.log(data.firstName,data.lastName,data.email)
+    //   document.getElementById('userName').innerText = `${data.firstName} ${data.lastName}`;
+    //   document.getElementById('userEmail').innerText = data.email;
+    // })
+    // .catch(error => console.error('Error:', error));
+    alert("hogaya")
+    
 });
 
 document.addEventListener('click', function(event) {
@@ -97,3 +108,7 @@ document.addEventListener('click', function(event) {
         menuOptions.style.display = 'none';
     }
 });
+document.querySelector('#menu-icon').addEventListener('click', function () {
+
+alert("hogya");
+  });

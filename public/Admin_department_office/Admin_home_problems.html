@@ -13,6 +13,77 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    body>.skiptranslate>iframe.skiptranslate {
+        display: none !important;
+        visibility: hidden !important;
+    }
+
+    .goog-logo-link,
+    .gskiptranslate,
+    .goog-te-gadget span,
+    .goog-te-banner-frame,
+    #goog-gt-tt,
+    .goog-te-balloon-frame,
+    div#goog-gt- {
+        display: none !important;
+        visibility: hidden !important;
+    }
+
+    .goog-te-gadget {
+        color: transparent !important;
+        font-size: 0px;
+    }
+
+    body>.skiptranslate {
+        display: none;
+    }
+
+    .goog-text-highlight {
+        background: none !important;
+        box-shadow: none !important;
+    }
+
+
+    #google_translate_element select {
+
+        color: #000000;
+        font-size: 15px;
+        border: none;
+        z-index: 10;
+        border-radius: 5px;
+        width: 350px;
+        height: 30px;
+        /* margin-left: 14px; */
+        position: relative;
+        left: 40px;
+        /* padding-left: 3233px; */
+        border: 1px solid grey;
+    }
+</style>
+<script>
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement({
+            pageLanguage: 'en',
+            autoDisplay: 'true',
+            layout: google.translate.TranslateElement.InlineLayout.HORIZONTAL
+        }, 'google_translate_element');
+    }
+</script>
+<script src='//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit'></script>
+
 </head>
 <body>
 
@@ -26,19 +97,42 @@
             <li><a href="../Admin_department_office/Admin_completed_problems.html">Completed</a></li>
             <li><a href="../Admin_department_office/Admin_accepted_problems.html">Accepted</a></li>
             <li><a href="../Admin_department_office/Admin_rejected_problems.html">Rejected </a></li>
+            <!-- <li><a href="https://vc-kohl.vercel.app/">Connect </a></li> -->
             <li style="font-size: 25px;"><i class="fas fa-bars" id="menu-icon"></i></li>
             <ul class="menu-options" id="menu-options">
-                <div style="border: 2px solid black; " id="menu-div">
-                    <div>
-                        <div
-                            style="background-image: url(../HOME_PAGE_IMAGES/sahilverma.jpg); background-size: cover; height: 90px; width: 90px; border-radius: 50%; margin: auto; margin-top: 20px; border: 1px solid black;">
-                        </div>
-                        <div>
-                            <h3 style="margin: auto;"> </h3>
-                        </div>
+                <div style="border: 2px solid black;" id="menu-div">
+                    <div style="text-align: center; padding: 20px;">
+                        <!-- Circular Image -->
+                        <img src="../User_home_page_images/9434619.jpg" alt="Centered Image"
+                            style="width: 90px; height: 90px; border-radius: 50%; display: block; margin: 0 auto;">
                     </div>
+                    <ul style="list-style-type: none; padding: 0;">
+
+                        <li style="height: 50px; background-color: transparent;">
+                            <h2 id="userName"
+                                style="font-weight: 100; font-size: 20px; margin-left: 160px; margin-bottom: 0;"></h2>
+                        </li>
+                        <li style="height: 50px; background-color: transparent;">
+                            <h2 style="font-weight: 100; font-size: 15px; margin-left: 40px; margin-bottom: 0;">Score:
+                                00</h2>
+                        </li>
+                        <li style="height: 50px; background-color: transparent;">
+                            <h2 id="userEmail"
+                                style="font-weight: 100; font-size: 15px; margin-left: 40px; margin-bottom: 0;">Email:
+                            </h2>
+                        </li>
+                        <li style="height: 50px; background-color: transparent;">
+                            <h2 style="font-weight: 100; font-size: 15px; margin-left: 40px; margin-bottom: 0;">Contact
+                                Us: nagarsarthi@gmail.com </h2>
+                        </li>
+                        <li style="height: 50px; background-color: transparent; text-align: center;">
+                            <h2 style="font-weight: 100; font-size: 15px; margin-bottom: 0;">Select the language</h2>
+                            <div id="google_translate_element" style="margin: 0 auto; margin-top: 3px;"></div>
+                        </li>
+                    </ul>
                 </div>
             </ul>
+
         </ul>
     </nav>
 
@@ -59,10 +153,10 @@
         <div class="footer">
             <div class="row">
                 <ul>
-                    <li><a href="#">sahilverma1512@gmail.com</a></li>
-                    <li><a href="#">yadavsatyamsingh@gmail.com</a></li>
+                    <li><a href="#">Narendrakaushik@gmail.com</a></li>
+                    <li><a href="#">AkashYadav@gmail.com</a></li>
                     <li><a href="#">Satender Kaushik</a></li>
-                    <li><a href="#">Rohit Kumar Singh</a></li>
+                    <li><a href="#">Shivam sharama</a></li>
 
                 </ul>
             </div>
@@ -78,70 +172,70 @@
         // Function to fetch data from the backend and display it in the main container
         // Function to fetch data from the backend and display it in the main container
         function fetchDataAndDisplay() {
-            fetch('/getAdminData')
-                .then(response => response.json())
-                .then(data => {
-                    const dataContainer = document.getElementById('data-container');
+    fetch('/getAdminData')
+        .then(response => response.json())
+        .then(data => {
+            const dataContainer = document.getElementById('data-container');
 
-                    // Clear previous content
-                    dataContainer.innerHTML = '';
+            // Clear previous content
+            dataContainer.innerHTML = '';
 
-                    // Filter data to exclude entries that are accepted, rejected, or on hold
-                    const filteredData = data.filter(entry => !entry.accept && !entry.reject && !entry.hold);
+            // Filter data to exclude entries that are accepted, rejected, or on hold
+            const filteredData = data.filter(entry => !entry.accept && !entry.reject && !entry.hold);
 
-                    // Loop through the filtered data array and create a card for each entry
-                    filteredData.forEach(entry => {
-                        const card = document.createElement('div');
-                        card.classList.add('card');
+            // Loop through the filtered data array and create a card for each entry
+            filteredData.forEach(entry => {
+                const card = document.createElement('div');
+                card.classList.add('card');
 
-                        // Wrap card with anchor tag
-                        const cardLink = document.createElement('a');
-                        cardLink.classList.add('card-link'); // Add class for styling
-                        cardLink.href = ` ../Admin_department_office/Admin_problem_details.html?id=${entry._id}`; // Pass ID in URL
-                        cardLink.appendChild(card);
+                // Wrap card with anchor tag
+                const cardLink = document.createElement('a');
+                cardLink.classList.add('card-link'); // Add class for styling
+                cardLink.href = ` ../Admin_department_office/Admin_problem_details.html?id=${entry._id}`; // Pass ID in URL
+                cardLink.appendChild(card);
 
-                        const descriptionLabel = document.createElement('span');
-                        descriptionLabel.classList.add('label');
-                        descriptionLabel.textContent = "Description:";
+                const emailLabel = document.createElement('span');
+                emailLabel.classList.add('label');
+                emailLabel.textContent = "Email:";
 
-                        const description = document.createElement('span');
-                        description.textContent = entry.description;
+                const email = document.createElement('span');
+                email.textContent = entry.email;
 
-                        const image = document.createElement('img');
-                        image.src = entry.imagePath;
-                        image.alt = 'Fetched Image';
+                const image = document.createElement('img');
+                image.src = entry.imagePath;
+                image.alt = 'Fetched Image';
 
-                        const addressLabel = document.createElement('span');
-                        addressLabel.classList.add('label');
-                        addressLabel.textContent = "Address:";
+                const addressLabel = document.createElement('span');
+                addressLabel.classList.add('label');
+                addressLabel.textContent = "Address:";
 
-                        const address = document.createElement('span');
-                        address.textContent = entry.address;
+                const address = document.createElement('span');
+                address.textContent = entry.address;
 
-                        const dateLabel = document.createElement('span'); // Create span for date
-                        dateLabel.classList.add('label');
-                        dateLabel.textContent = "Date:";
+                const dateLabel = document.createElement('span'); // Create span for date
+                dateLabel.classList.add('label');
+                dateLabel.textContent = "Date:";
 
-                        const date = document.createElement('span'); // Create span for date value
-                        date.textContent = new Date(entry.date).toLocaleDateString(); // Convert date to local string format
+                const date = document.createElement('span'); // Create span for date value
+                date.textContent = new Date(entry.date).toLocaleDateString(); // Convert date to local string format
 
-                        // Append elements to the card
-                        card.appendChild(image);
-                        card.appendChild(descriptionLabel);
-                        card.appendChild(description);
-                        card.appendChild(document.createElement('br')); // Add line break
-                        card.appendChild(addressLabel);
-                        card.appendChild(address);
-                        card.appendChild(document.createElement('br')); // Add line break
-                        card.appendChild(dateLabel); // Append date label
-                        card.appendChild(date); // Append date value
+                // Append elements to the card
+                card.appendChild(image);
+                card.appendChild(emailLabel);
+                card.appendChild(email);
+                card.appendChild(document.createElement('br')); // Add line break
+                card.appendChild(addressLabel);
+                card.appendChild(address);
+                card.appendChild(document.createElement('br')); // Add line break
+                card.appendChild(dateLabel); // Append date label
+                card.appendChild(date); // Append date value
 
-                        // Append card to the data container
-                        dataContainer.appendChild(cardLink); // Append cardLink instead of card
-                    });
-                })
-                .catch(error => console.error('Error fetching data:', error));
-        }
+                // Append card to the data container
+                dataContainer.appendChild(cardLink); // Append cardLink instead of card
+            });
+        })
+        .catch(error => console.error('Error fetching data:', error));
+}
 
         // Call the fetchDataAndDisplay function when the page loads
         window.onload = fetchDataAndDisplay;
@@ -155,6 +249,14 @@
             } else {
                 menuOptions.style.display = 'none';
             }
+            fetch('/getAdminProfileInfo')
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data.firstName, data.lastName, data.email)
+                    document.getElementById('userName').innerText = `${data.firstName} ${data.lastName}`;
+                    document.getElementById('userEmail').innerText = `Email: ${data.email}`;
+                })
+                .catch(error => console.error('Error:', error));
         });
 
         document.addEventListener('click', function (event) {

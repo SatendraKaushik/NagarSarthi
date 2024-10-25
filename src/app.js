@@ -11,8 +11,8 @@ const db = require("./db/conn");;
 const MongoDBStore = require('connect-mongodb-session')(session);
 // Initialize MongoDB session store
 const store = new MongoDBStore({
-  uri: 'mongodb://localhost:27017/mcd', // Your MongoDB connection URI
-  collection: 'sessions',
+  uri: 'mongodb://localhost:27017/mcd', 
+    collection: 'sessions',
   mongooseConnection: db, // Pass the mongoose connection to the store
 });
 
@@ -102,7 +102,7 @@ app.post("/submitForm", (req, res) => {
 app.get("/getData", async (req, res) => {
   try {
     const city = req.session.userCity;
-    console.log(city);
+    // console.log(city);
     const allData = await FormEntry.find();
     const filteredData = allData.filter((entry) => entry.district === city);
     if (!filteredData || filteredData.length === 0) {
@@ -216,10 +216,10 @@ app.get("/getUserData", async (req, res) => {
     // Fetch all data from the database
     const allData = await FormEntry.find();
     const userid = req.session.userId;
-    // console.log("sir apkki id " + userid);
+   
 
     const filteredData = allData.filter((entry) => entry.userid === userid);
-    console.log(filteredData);
+    // console.log(filteredData);
     if (!filteredData || filteredData.length === 0) {
       return res.status(404).json({ error: "No data found" });
     }
@@ -230,6 +230,35 @@ app.get("/getUserData", async (req, res) => {
     res.status(500).send("Error fetching data");
   }
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 app.get("/getDetailsById", (req, res) => {
   const cardId = req.query.id;
@@ -311,6 +340,7 @@ app.post("/Login", async (req, res) => {
         '<script>alert("Invalid captcha"); window.location.href = "/";</script>'
       );
     }
+    
     const city = user.district;
     req.session.userId = user.uniqueId;
     req.session.userCity = city;
@@ -323,6 +353,92 @@ app.post("/Login", async (req, res) => {
     );
   }
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+app.get("/getUserProfileInfo", async (req, res) => {
+  try {
+   
+    const userId = req.session.userId;
+    // console.log("THis is the user id>>>>",userId)
+
+    if (!userId) {
+      return res.status(403).json({ error: "No user session found" });
+    }
+    const user = await UserLogin.findOne({ uniqueId: userId });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+  //  console.log(user.firstName,user.lastName,user.email);
+    res.json({
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email
+    });
+  } catch (error) {
+    console.error("Error fetching user info:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+
+app.get("/getAdminProfileInfo", async (req, res) => {
+  try {
+   
+    const userId = req.session.userId;
+    // console.log("THis is the user id>>>>",userId)
+
+    if (!userId) {
+      return res.status(403).json({ error: "No user session found" });
+    }
+    const user = await UserLogin.findOne({ uniqueId: userId });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+  //  console.log(user.firstName,user.lastName,user.email);
+    res.json({
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email
+    });
+  } catch (error) {
+    console.error("Error fetching user info:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // Adminfunctionality
 app.post("/AdminsubmitForm", async (req, res) => {
